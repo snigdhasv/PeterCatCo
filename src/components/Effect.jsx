@@ -1,3 +1,4 @@
+//Effect.jsx
 import { useLoader } from '@react-three/fiber'
 import { EffectComposer, Bloom, LUT } from '@react-three/postprocessing'
 import { useControls } from 'leva'

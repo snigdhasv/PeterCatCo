@@ -1,3 +1,4 @@
+/* index.css */
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
 
@@ -95,3 +96,113 @@ body{
   align-items: center;
 }
 
+.info-panel { 
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.info-panel h2 {
+  color: #66b2ff;
+}
+
+.info-panel p {
+  margin: 10px 0;
+}
+
+.info-panel label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #66b2ff;
+}
+
+.info-panel input[type="color"],
+.info-panel input[type="range"],
+.info-panel input[type="number"],
+.info-panel select {
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.info-panel input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.info-panel button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #66b2ff;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.info-panel button:hover {
+  background-color: #558bcc;
+}
+
+.import-container {
+  position: fixed;  /* Keep this for fixed positioning */
+  bottom: 20px;      /* Adjust for desired vertical distance from bottom */
+  left: 20px;        /* Adjust for desired horizontal distance from left */
+  background-color: #1a1a1a;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+}
+
+.info-close .close-button {
+  /* Your close button styles here */
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  font-size: 0.8rem;
+  padding: 3px 5px;
+  cursor: pointer;
+  text-align: left;
+  /* Reset styles (optional) */
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  text-decoration: none;
+}
+
+
+.info-close .close-button button:hover {
+  color: #66b2ff;
+  border: none;
+  font-size: 0.8rem;
+  padding: 3px 5px;
+  cursor: pointer;
+  text-align: left;
+  /* Reset styles (optional) */
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  text-decoration: none;
+}
+
+.info-close {
+  color: #66b2ff;
+  align-content: left;
+  size-adjust: 30%;
+}

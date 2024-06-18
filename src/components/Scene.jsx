@@ -1,3 +1,4 @@
+//Scene.jsx
 import {
     Environment,
     Lightformer,
@@ -11,10 +12,10 @@ import {
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { useLoader } from "@react-three/fiber";
 import { DRACOLoader } from "three/examples/jsm/Addons.js";
-import React, { useEffect } from "react";
+import React, { forwardRef, useEffect } from "react";
 import {Effects} from "./Effect"
 
-export const Scene = ({path, ...props }) => {
+export const Scene = forwardRef(({onObjectClick, onObjectHover, path, ...props },ref) => {
     const { scene } = useLoader(GLTFLoader,path, (loader) => {
         const dracoLoader = new DRACOLoader()
         dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')
@@ -31,13 +32,30 @@ export const Scene = ({path, ...props }) => {
         });
 
     }, [scene]);
+
+    const handlePointerOver = (e) => {
+        e.stopPropagation();
+        onObjectHover(e.object);
+      };
+    
+      const handlePointerOut = () => {
+        onObjectHover(null);
+      };
+
     const ratioScale = Math.min(1.2, Math.max(0.5, window.innerWidth / 1920));
 
     return (
         <>
             <group {...props} dispose={null}>
                 <PerspectiveCamera makeDefault position={[0,0,12]} near={0.5} />
-                <primitive object={scene} scale={1.5*ratioScale} rotation={[0,Math.PI/1.5,0]}/>
+                <primitive object={scene} scale={1.5*ratioScale} rotation={[0,Math.PI/1.5,0]}
+                    onPointerUp={(e) => {
+                        e.stopPropagation();
+                        onObjectClick(e.object);
+                    }}
+                    onPointerOver={handlePointerOver}
+                    onPointerOut={handlePointerOut}
+                />
                 
                 <hemisphereLight intensity={0.5} />
                 <ContactShadows resolution={1024} frames={1} position={[0,0, 0]} scale={15} blur={0.7} opacity={1} far={25} />
@@ -89,4 +107,4 @@ export const Scene = ({path, ...props }) => {
             </group>
         </>
     );
-};
+});
