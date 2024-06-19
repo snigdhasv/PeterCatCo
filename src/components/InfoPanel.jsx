@@ -20,9 +20,13 @@ function InfoPanel({
   onSizeChange,
   onExport,
 }) {
+  console.log("object:",object);
   if (!object) return null;
 
   const { geometry, material, name } = object;
+  console.log("geometry",geometry);
+  console.log("material",material);
+  if(!geometry || !material) return null;
   const materialTypes = [
     'MeshBasicMaterial',
     'MeshLambertMaterial',

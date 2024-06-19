@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useState, useRef } from 'react';
 import { useAtom } from "jotai";
 import { Leva } from "leva";
@@ -8,17 +9,16 @@ import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
 import useExportControls from './components/ExportControls';
 import { scenes } from './components/Experience';
-import {Scene} from './components/Scene';
+import { Scene } from './components/Scene';
 
 function App() {
   const [slide] = useAtom(slideAtom);
   const [selectedObject, setSelectedObject] = useState(null);
-  const [selectedObjectState, setSelectedObjectState] = useState(null);
-  const [showInfoPanel, setShowInfoPanel] = useState(false);
+  const [showInfoPanel, setShowInfoPanel] = useState(true);
   const sceneRef = useRef();
   const canvasRef = useRef();
-  const selectedObjectRef = useRef(null);
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
+
   const { handleExport } = useExportControls(canvasRef);
   const {
     handleColorChange,
@@ -35,6 +35,8 @@ function App() {
     handleGeometryChange,
     handleSizeChange,
   } = useSceneControls(() => setSelectedObject((prev) => prev + 1));
+
+  
 
   const handleCloseInfoPanel = () => {
     setShowInfoPanel(false);
@@ -54,7 +56,7 @@ function App() {
           {...scenes[slide]}
         />
       </CanvasComponent>
-      {showInfoPanel && (
+      {selectedObject && (
         <InfoPanel
           object={selectedObject}
           onClose={handleCloseInfoPanel}

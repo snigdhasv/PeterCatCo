@@ -1,3 +1,4 @@
+//ObjectControls.jsx
 import { useState, useEffect, useRef } from 'react';
 
 const useObjectControls = (setSelectedObject, setShowInfoPanel) => {

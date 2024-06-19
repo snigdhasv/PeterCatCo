@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 const useSceneControls = (updateSelectedObject) => {
-    
+
   const handleColorChange = (object, color) => {
     const newMaterial = object.material.clone();
     newMaterial.color.set(color);
@@ -42,8 +42,6 @@ const useSceneControls = (updateSelectedObject) => {
     object.material = newMaterial;
     updateSelectedObject();
   };
-
-  // Similar handlers for other controls...
   
   const handleWireframeToggle = (object) => {
     const newMaterial = object.material.clone();
