@@ -41,6 +41,7 @@ function App() {
   const handleCloseInfoPanel = () => {
     setShowInfoPanel(false);
     setSelectedObject(null);
+    console.log("closed");
   };
 
   return (
