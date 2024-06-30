@@ -6,8 +6,6 @@ import {
     PerspectiveCamera,
     ContactShadows,
     MeshReflectorMaterial,
-    Reflector,
-    useGLTF,
 } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { useLoader } from "@react-three/fiber";
@@ -58,8 +56,7 @@ export const Scene = forwardRef(({onObjectClick, onObjectHover, path, ...props }
                 />
                 
                 <hemisphereLight intensity={0.5} />
-                <ContactShadows resolution={1024} frames={1} position={[0,0, 0]} scale={15} blur={0.7} opacity={1} far={25} />
-
+                {/* <ContactShadows resolution={1024} frames={1} position={[0,0, 0]} scale={15} blur={0.7} opacity={1} far={25} /> */}
                 
                 <mesh scale={3*ratioScale} position={[3*ratioScale, -0.1, -0.8]} rotation={[-Math.PI / 2, 0, Math.PI / 2.5]}>
                     <ringGeometry args={[0.9, 1, 4, 1]} />
@@ -102,7 +99,7 @@ export const Scene = forwardRef(({onObjectClick, onObjectHover, path, ...props }
                     />
                 </mesh>
                 <Effects />
-                <OrbitControls enablePan={false} enableZoom={true} minPolarAngle={Math.PI / 2.2} maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={10}/>
+                <OrbitControls enablePan={false} enableZoom={true} minPolarAngle={Math.PI / 2.2} maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={20}/>
                 
             </group>
         </>

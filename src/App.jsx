@@ -2,13 +2,13 @@
 import React, { useState, useRef } from 'react';
 import { useAtom } from "jotai";
 import { Leva } from "leva";
-import { Overlay, slideAtom } from "./components/Overlay";
+import { Overlay } from "./components/Overlay";
 import InfoPanel from './components/InfoPanel';
 import CanvasComponent from './components/CanvasComponent';
 import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
 import useExportControls from './components/ExportControls';
-import { scenes } from './components/Experience';
+import { scenes, slideAtom } from './components/Experience';
 import { Scene } from './components/Scene';
 
 function App() {

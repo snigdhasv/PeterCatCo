@@ -1,6 +1,8 @@
 /* index.css */
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 
 #root{
   width:100vw;
@@ -25,6 +27,7 @@ body{
   pointer-events: none;
   color: #f5f0f0;
   transition: opacity 1s;
+  background-color: transparent;
 }
 
 .visible {
@@ -36,38 +39,127 @@ body{
 }
 
 .logo {
-  width: 4rem;
-  margin: 1rem auto;
+  font-family: "Racing Sans One", sans-serif;
+  color: #de1d1d;
 }
 
-.nav {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.nav-bar {
+  position: fixed;
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
+  top: 0;
+  color: white;
+  pointer-events: auto;
+  background-color: transparent;
 }
 
-.nav-button {
-  width: 2.5rem;
-  height: 2.5rem;
+.nav-left, .nav-right {
+  display: flex;
+  padding: 1.5rem;
+  gap: 3rem;
+}
+
+.nav-bar .nav-left .nav-link,
+.nav-bar .nav-right .nav-link {
+  font-family: "Exo 2", sans-serif;
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-bar .nav-left .nav-link:hover,
+.nav-bar .nav-right .nav-link:hover {
+  color: rgb(255, 0, 0);
+}
+
+label.nav-link{
+  cursor: pointer;
+}
+
+.exportbtn{
+  font-family: "Exo 2", sans-serif;
+  font-size: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.exportbtn:hover{
+  color: rgb(255, 0, 0);
+}
+
+.dropdown .dropbtn{
+  font-family: "Exo 2", sans-serif;
+  font-size: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.dropdown .dropbtn:hover{
+  color: rgb(255, 0, 0);
+}
+
+.dropdown-content {
+  font-family: "Exo 2", sans-serif;
+  display: none;
+  position: absolute;
+  background-color: #f5f0f0;
+  min-width: 13rem;
+  z-index: 1;
+}
+
+.dropdown-content button {
+  float: none;
+  min-width: 13rem;
+  border-style: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content button:hover {
+  background-color: #dba7a7;
+  cursor: pointer;  
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.delete{
+  top:45rem;
+  left: 92rem;
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
   pointer-events: auto;
   cursor: pointer;
   transition: opacity 0.3s;
 }
 
-.nav-button:hover {
+.delete:hover {
   opacity: 0.6;
 }
 
 .content {
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.066), transparent);
-  padding-top: 5rem;
-  padding-bottom: 2.5rem;
+  padding-top: 4rem;
   padding-left: 1rem;
   padding-right: 1rem;
   display: flex;
@@ -77,23 +169,37 @@ body{
 }
 
 .title {
+  padding-top: 30rem;
   font-family:"Racing Sans One", sans-serif;
   font-size: 2.7rem;
   font-weight: 800;
-  margin: 5rem;
+  margin: 2rem;
 }
 
-.icons {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  margin-top: 2.5rem;
+.pages-button {
+  font-family: "Exo 2", sans-serif;
+  cursor: pointer;
+  pointer-events: auto;
+  background-color: transparent;
+  color: #f5f0f0;
+  float: left;
+  padding: 8px 16px;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  margin: 0 4px;
 }
 
-.icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.pages .active {
+  background-color: #f5f0f0;
+  color: black;
+}
+
+.pages-button:hover {
+  font-weight: bold;
+  background-color: #de1d1d;
+  color: #f5f0f0;
 }
 
 .info-panel { 
@@ -206,3 +312,4 @@ body{
   align-content: left;
   size-adjust: 30%;
 }
+
