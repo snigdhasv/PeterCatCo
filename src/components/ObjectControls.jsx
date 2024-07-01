@@ -1,18 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
+import * as THREE from 'three';
 
 const useObjectControls = (setSelectedObject, setShowInfoPanel) => {
   const [highlightedMesh, setHighlightedMesh] = useState(null);
-  const selectedObjectRef = useRef();
-
-  useEffect(() => {
-    if (selectedObjectRef.current && selectedObjectRef.current.material) {
-      setShowInfoPanel(true);
-    }
-  }, [selectedObjectRef.current, setShowInfoPanel]);
 
   const handleObjectClick = (mesh) => {
     setSelectedObject(mesh);
-    selectedObjectRef.current = mesh;
     setShowInfoPanel(true);
   };
 

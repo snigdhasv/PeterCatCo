@@ -1,81 +1,73 @@
 import * as THREE from 'three';
 
 const useSceneControls = (setSelectedObject) => {
-  const handleColorChange = (object, color) => {
+  const updateMaterial = (object, updater) => {
     const newMaterial = object.material.clone();
-    newMaterial.color.set(color);
+    updater(newMaterial);
     object.material = newMaterial;
     setSelectedObject({ ...object });
+  };
+
+  const handleColorChange = (object, color) => {
+    updateMaterial(object, (material) => material.color.set(color));
   };
 
   const handleMaterialChange = (object, materialType) => {
+    const oldMaterial = object.material;
+    // Create a new material of the specified type
     const newMaterial = new THREE[materialType]();
-    Object.assign(newMaterial, object.material);
+    // Copy essential properties from the old material
+    newMaterial.color = oldMaterial.color.clone();
+    newMaterial.transparent = oldMaterial.transparent;
+    newMaterial.opacity = oldMaterial.opacity;
+    newMaterial.wireframe = oldMaterial.wireframe;
+    // Dispose of the old material
+    oldMaterial.dispose();
+  
+    // Assign the new material to the object
     object.material = newMaterial;
+  
+    // Update the state to reflect the changes
     setSelectedObject({ ...object });
   };
+  
 
   const handleWireframeToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.wireframe = !newMaterial.wireframe;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.wireframe = !material.wireframe);
   };
 
   const handleTransparentToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.transparent = !newMaterial.transparent;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.transparent = !material.transparent);
   };
 
   const handleOpacityChange = (object, opacity) => {
-    const newMaterial = object.material.clone();
-    newMaterial.opacity = opacity;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
-  };
+    updateMaterial(object, (material) => {
+      material.opacity = parseFloat(opacity); // Ensure the opacity is a number
+    });
+  };  
 
   const handleDepthTestToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.depthTest = !newMaterial.depthTest;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.depthTest = !material.depthTest);
   };
 
   const handleDepthWriteToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.depthWrite = !newMaterial.depthWrite;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.depthWrite = !material.depthWrite);
   };
 
   const handleAlphaHashToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.alphaHash = !newMaterial.alphaHash;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.alphaHash = !material.alphaHash);
   };
 
   const handleSideChange = (object, side) => {
-    const newMaterial = object.material.clone();
-    newMaterial.side = side;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.side = side);
   };
 
   const handleFlatShadingToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.flatShading = !newMaterial.flatShading;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.flatShading = !material.flatShading);
   };
 
   const handleVertexColorsToggle = (object) => {
-    const newMaterial = object.material.clone();
-    newMaterial.vertexColors = newMaterial.vertexColors === THREE.NoColors ? THREE.VertexColors : THREE.NoColors;
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+    updateMaterial(object, (material) => material.vertexColors = material.vertexColors === THREE.NoColors ? THREE.VertexColors : THREE.NoColors);
   };
 
   const handleGeometryChange = (object, geometryType) => {

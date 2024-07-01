@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as THREE from 'three';
 
 function InfoPanel({
@@ -19,55 +19,48 @@ function InfoPanel({
   onSizeChange,
   onExport,
 }) {
+  const [color, setColor] = useState('#ffffff');
+  const [material, setMaterial] = useState('MeshBasicMaterial');
+  const [geometry, setGeometry] = useState('BoxGeometry');
+  const [size, setSize] = useState(1);
+  const [side, setSide] = useState(THREE.FrontSide);
+  const [opacity, setOpacity] = useState(1);
+  const [isTransparent, setIsTransparent] = useState(false);
+
+  useEffect(() => {
+    if (object) {
+      setColor(`#${object.material.color.getHexString()}`);
+      setMaterial(object.material.type);
+      setGeometry(object.geometry.type);
+      setSize(object.scale.x);
+      setSide(object.material.side);
+      setOpacity(object.material.opacity);
+      setIsTransparent(object.material.transparent);
+    }
+  }, [object]);
+
   if (!object) return null;
-
-  const { geometry, material, name } = object;
-
-  const handleColorChange = (e) => {
-    const colorValue = e.target.value;
-    onColorChange(object, colorValue);
-  };
-
-  const handleMaterialChange = (e) => {
-    const materialType = e.target.value;
-    onMaterialChange(object, materialType);
-  };
-
-  const handleGeometryChange = (e) => {
-    const geometryType = e.target.value;
-    onGeometryChange(object, geometryType);
-  };
-
-  const handleSizeChange = (e) => {
-    const sizeValue = parseFloat(e.target.value);
-    onSizeChange(object, sizeValue);
-  };
-
-  const handleSideChange = (e) => {
-    const sideValue = parseInt(e.target.value);
-    onSideChange(object, sideValue);
-  };
 
   return (
     <div className="info-panel">
       <div className="info-header">
         <h2>Info Panel</h2>
-        <button className="close-button" onClick={onClose}>
-          X
-        </button>
+        <button className="close-button" onClick={onClose}>X</button>
       </div>
-      <p><strong>Name:</strong> {name ? name : 'Unnamed'}</p>
+      <p><strong>Name:</strong> {object.name ? object.name : 'Unnamed'}</p>
       <div>
         <label>Color:</label>
-        <input
-          type="color"
-          value={material && material.color ? `#${material.color.getHexString()}` : '#ffffff'}
-          onChange={handleColorChange}
-        />
+        <input type="color" value={color} onChange={(e) => {
+          setColor(e.target.value);
+          onColorChange(object, e.target.value);
+        }} />
       </div>
       <div>
         <label>Material:</label>
-        <select value={material ? material.type : ''} onChange={handleMaterialChange}>
+        <select value={material} onChange={(e) => {
+          setMaterial(e.target.value);
+          onMaterialChange(object, e.target.value);
+        }}>
           <option value="MeshBasicMaterial">Basic</option>
           <option value="MeshLambertMaterial">Lambert</option>
           <option value="MeshPhongMaterial">Phong</option>
@@ -79,26 +72,21 @@ function InfoPanel({
         </select>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.wireframe : false}
-            onChange={() => onWireframeToggle(object)}
-          />
-          Wireframe
-        </label>
+        <label>Wireframe:</label>
+        <button onClick={() => onWireframeToggle(object)}>
+          Toggle Wireframe
+        </button>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.transparent : false}
-            onChange={() => onTransparentToggle(object)}
-          />
-          Transparent
-        </label>
+      <label>Transparent:</label>
+        <button onClick={() => {
+          onTransparentToggle(object);
+          setIsTransparent(!isTransparent); // Update transparency toggle state
+        }}>
+          {isTransparent ? 'Disable Transparency' : 'Enable Transparency'}
+        </button>
       </div>
-      {material && material.transparent && (
+      {isTransparent && ( // Conditionally render opacity controls when transparency is enabled
         <div>
           <label>Opacity:</label>
           <input
@@ -106,85 +94,74 @@ function InfoPanel({
             min="0"
             max="1"
             step="0.01"
-            value={material.opacity}
-            onChange={(e) => onOpacityChange(object, parseFloat(e.target.value))}
+            value={opacity}
+            onChange={(e) => {
+              setOpacity(e.target.value);
+              onOpacityChange(object, e.target.value);
+            }}
           />
         </div>
       )}
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.depthTest : false}
-            onChange={() => onDepthTestToggle(object)}
-          />
-          Depth Test
-        </label>
+        <label>Depth Test:</label>
+        <button onClick={() => onDepthTestToggle(object)}>
+          Toggle Depth Test
+        </button>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.depthWrite : false}
-            onChange={() => onDepthWriteToggle(object)}
-          />
-          Depth Write
-        </label>
+        <label>Depth Write:</label>
+        <button onClick={() => onDepthWriteToggle(object)}>
+          Toggle Depth Write
+        </button>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.alphaHash : false}
-            onChange={() => onAlphaHashToggle(object)}
-          />
-          Alpha Hash
-        </label>
+        <label>Alpha Hash:</label>
+        <button onClick={() => onAlphaHashToggle(object)}>
+          Toggle Alpha Hash
+        </button>
       </div>
       <div>
         <label>Side:</label>
-        <select value={material ? material.side : THREE.FrontSide} onChange={handleSideChange}>
-          <option value={THREE.FrontSide}>Front Side</option>
-          <option value={THREE.BackSide}>Back Side</option>
-          <option value={THREE.DoubleSide}>Double Side</option>
+        <select value={side} onChange={(e) => {
+          setSide(e.target.value);
+          onSideChange(object, e.target.value);
+        }}>
+          <option value={THREE.FrontSide}>Front</option>
+          <option value={THREE.BackSide}>Back</option>
+          <option value={THREE.DoubleSide}>Double</option>
         </select>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.flatShading : false}
-            onChange={() => onFlatShadingToggle(object)}
-          />
-          Flat Shading
-        </label>
+        <label>Flat Shading:</label>
+        <button onClick={() => onFlatShadingToggle(object)}>
+          Toggle Flat Shading
+        </button>
       </div>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={material ? material.vertexColors !== THREE.NoColors : false}
-            onChange={() => onVertexColorsToggle(object)}
-          />
-          Vertex Colors
-        </label>
+        <label>Vertex Colors:</label>
+        <button onClick={() => onVertexColorsToggle(object)}>
+          Toggle Vertex Colors
+        </button>
       </div>
       <div>
         <label>Geometry:</label>
-        <select value={geometry ? geometry.type : ''} onChange={handleGeometryChange}>
-          <option value="ConeGeometry">Cone</option>
+        <select value={geometry} onChange={(e) => {
+          setGeometry(e.target.value);
+          onGeometryChange(object, e.target.value);
+        }}>
           <option value="BoxGeometry">Box</option>
           <option value="SphereGeometry">Sphere</option>
+          <option value="CylinderGeometry">Cylinder</option>
+          <option value="ConeGeometry">Cone</option>
+          <option value="TorusGeometry">Torus</option>
         </select>
       </div>
       <div>
         <label>Size:</label>
-        <input
-          type="number"
-          step="0.1"
-          value={object.scale.x || 1}
-          onChange={handleSizeChange}
-        />
+        <input type="number" value={size} onChange={(e) => {
+          setSize(e.target.value);
+          onSizeChange(object, e.target.value);
+        }} />
       </div>
       <div>
         <button onClick={onExport}>Export</button>
