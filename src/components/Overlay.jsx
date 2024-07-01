@@ -115,40 +115,6 @@ export const Overlay = () => {
   return (
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
       <>
-        <div className="nav-bar">
-          <div className="nav-left">
-            <input
-              type="file"
-              accept=".glb,.gltf"
-              onChange={handleImportDevice}
-              style={{ display: 'none' }}
-              id="import-file"
-            />
-            <label htmlFor="import-file" className="nav-link">
-              Import From Device
-            </label>
-            <button onClick={handleExportDevice} className="exportbtn">
-              Export To Device
-            </button>
-          </div>
-          <h1 className='logo'>PeterCatCo</h1>
-          {/* <img src={logo} alt="Logo" className="logo" />  */}
-          <div className="nav-right">
-            <div className="dropdown">
-              <button className="dropbtn" onClick={() => setShowDropdown(!showDropdown)}>
-                Import From Firebase
-              </button>
-              {showDropdown && (
-                <div className="dropdown-content">
-                  <CloudLoader onSelectModel={(car) => console.log(`Selected car: ${car}`)} />
-                </div>
-              )}
-            </div>
-            <button onClick={handleExport} className="exportbtn">
-              Export To Firebase
-            </button>
-          </div>
-        </div>
         <div className="nav">
           <div className="arrows">
           <img
