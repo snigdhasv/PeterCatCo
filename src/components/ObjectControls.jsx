@@ -10,21 +10,23 @@ const useObjectControls = (setSelectedObject, setShowInfoPanel) => {
   };
 
   const handleObjectHover = (mesh) => {
-    if (mesh && mesh !== highlightedMesh) {
-      if (highlightedMesh) {
-        highlightedMesh.material.color.copy(highlightedMesh.originalColor);
+    if (mesh && mesh.material && mesh.material.color) {
+      if (mesh !== highlightedMesh) {
+        if (highlightedMesh && highlightedMesh.material && highlightedMesh.material.color) {
+          highlightedMesh.material.color.copy(highlightedMesh.originalColor);
+        }
+        mesh.originalColor = mesh.material.color.clone();
+        const darkerColor = mesh.originalColor.clone().multiplyScalar(0.8);
+        mesh.material.color.copy(darkerColor);
+        setHighlightedMesh(mesh);
       }
-      mesh.originalColor = mesh.material.color.clone();
-      const darkerColor = mesh.originalColor.clone().multiplyScalar(0.8);
-      mesh.material.color.copy(darkerColor);
-      setHighlightedMesh(mesh);
-    } else if (!mesh && highlightedMesh) {
+    } else if (!mesh && highlightedMesh && highlightedMesh.material && highlightedMesh.material.color) {
       highlightedMesh.material.color.copy(highlightedMesh.originalColor);
       setHighlightedMesh(null);
     }
   };
 
-  return { handleObjectClick, handleObjectHover, highlightedMesh };
+  return { handleObjectClick, handleObjectHover };
 };
 
 export default useObjectControls;
