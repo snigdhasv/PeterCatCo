@@ -6,7 +6,6 @@ import InfoPanel from './components/InfoPanel';
 import CanvasComponent from './components/CanvasComponent';
 import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
-import useExportControls from './components/ExportControls';
 import { scenes, slideAtom } from './components/Experience';
 import { Scene } from './components/Scene';
 
@@ -19,9 +18,6 @@ function App() {
   
   // Object controls hook
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
-  
-  // Export controls hook
-  const { handleExport } = useExportControls(canvasRef);
   
   // Scene controls hook
   const {
@@ -75,7 +71,6 @@ function App() {
           onVertexColorsToggle={handleVertexColorsToggle}
           onGeometryChange={handleGeometryChange}
           onSizeChange={handleSizeChange}
-          onExport={handleExport}
         />
       )}
     </>

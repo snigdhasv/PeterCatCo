@@ -163,9 +163,6 @@ function InfoPanel({
           onSizeChange(object, e.target.value);
         }} />
       </div>
-      <div>
-        <button onClick={onExport}>Export</button>
-      </div>
     </div>
   );
 }
