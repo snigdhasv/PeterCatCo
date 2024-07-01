@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useRef } from 'react';
 import { useAtom } from "jotai";
 import { Leva } from "leva";
@@ -17,9 +16,14 @@ function App() {
   const [showInfoPanel, setShowInfoPanel] = useState(true);
   const sceneRef = useRef();
   const canvasRef = useRef();
+  
+  // Object controls hook
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
-
+  
+  // Export controls hook
   const { handleExport } = useExportControls(canvasRef);
+  
+  // Scene controls hook
   const {
     handleColorChange,
     handleMaterialChange,
@@ -34,14 +38,11 @@ function App() {
     handleVertexColorsToggle,
     handleGeometryChange,
     handleSizeChange,
-  } = useSceneControls(() => setSelectedObject((prev) => prev + 1));
-
-  
+  } = useSceneControls(() => {});
 
   const handleCloseInfoPanel = () => {
     setShowInfoPanel(false);
     setSelectedObject(null);
-    console.log("closed");
   };
 
   return (

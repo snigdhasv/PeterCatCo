@@ -1,4 +1,3 @@
-// InfoPanel.jsx
 import React from 'react';
 import * as THREE from 'three';
 
@@ -20,76 +19,70 @@ function InfoPanel({
   onSizeChange,
   onExport,
 }) {
-  console.log("object:",object);
   if (!object) return null;
 
   const { geometry, material, name } = object;
-  console.log("geometry",geometry);
-  console.log("material",material);
-  if(!geometry || !material) return null;
-  const materialTypes = [
-    'MeshBasicMaterial',
-    'MeshLambertMaterial',
-    'MeshPhongMaterial',
-    'MeshStandardMaterial',
-    'MeshNormalMaterial',
-    'MeshPhysicalMaterial',
-    'MeshToonMaterial',
-    'MeshMatcapMaterial'
-  ];
-  const sideOptions = [
-    { label: 'Front Side', value: THREE.FrontSide },
-    { label: 'Back Side', value: THREE.BackSide },
-    { label: 'Double Side', value: THREE.DoubleSide },
-  ];
-  const geometryOptions = [
-    { label: 'Cone', value: 'ConeGeometry' },
-    { label: 'Cube', value: 'BoxGeometry' },
-    { label: 'Sphere', value: 'SphereGeometry' },
-  ];
+
+  const handleColorChange = (e) => {
+    const colorValue = e.target.value;
+    onColorChange(object, colorValue);
+  };
+
+  const handleMaterialChange = (e) => {
+    const materialType = e.target.value;
+    onMaterialChange(object, materialType);
+  };
+
+  const handleGeometryChange = (e) => {
+    const geometryType = e.target.value;
+    onGeometryChange(object, geometryType);
+  };
+
+  const handleSizeChange = (e) => {
+    const sizeValue = parseFloat(e.target.value);
+    onSizeChange(object, sizeValue);
+  };
+
+  const handleSideChange = (e) => {
+    const sideValue = parseInt(e.target.value);
+    onSideChange(object, sideValue);
+  };
 
   return (
     <div className="info-panel">
-      <div className="info-close">
+      <div className="info-header">
+        <h2>Info Panel</h2>
         <button className="close-button" onClick={onClose}>
-            X
+          X
         </button>
       </div>
-      <div className="info-header">
-        
-        <h2>Info Panel</h2>
-        
-      </div>
-
       <p><strong>Name:</strong> {name ? name : 'Unnamed'}</p>
-      <p><strong>Type:</strong> {geometry.type}</p>
-      <p><strong>Material:</strong> {material.type}</p>
-      {material && (
-        <div>
-          <label>Color</label>
-          <input
-            type="color"
-            value={`#${material.color ? material.color.getHexString() : 'ffffff'}`}
-            onChange={(e) => onColorChange(object, e.target.value)}
-          />
-        </div>
-      )}
-
       <div>
-        <label>Material</label>
-        <select value={material.type} onChange={(e) => onMaterialChange(object, e.target.value)}>
-          {materialTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
+        <label>Color:</label>
+        <input
+          type="color"
+          value={material && material.color ? `#${material.color.getHexString()}` : '#ffffff'}
+          onChange={handleColorChange}
+        />
+      </div>
+      <div>
+        <label>Material:</label>
+        <select value={material ? material.type : ''} onChange={handleMaterialChange}>
+          <option value="MeshBasicMaterial">Basic</option>
+          <option value="MeshLambertMaterial">Lambert</option>
+          <option value="MeshPhongMaterial">Phong</option>
+          <option value="MeshStandardMaterial">Standard</option>
+          <option value="MeshNormalMaterial">Normal</option>
+          <option value="MeshPhysicalMaterial">Physical</option>
+          <option value="MeshToonMaterial">Toon</option>
+          <option value="MeshMatcapMaterial">Matcap</option>
         </select>
       </div>
       <div>
         <label>
           <input
             type="checkbox"
-            checked={material.wireframe}
+            checked={material ? material.wireframe : false}
             onChange={() => onWireframeToggle(object)}
           />
           Wireframe
@@ -99,15 +92,15 @@ function InfoPanel({
         <label>
           <input
             type="checkbox"
-            checked={material.transparent}
+            checked={material ? material.transparent : false}
             onChange={() => onTransparentToggle(object)}
           />
           Transparent
         </label>
       </div>
-      {material.transparent && (
+      {material && material.transparent && (
         <div>
-          <label>Opacity</label>
+          <label>Opacity:</label>
           <input
             type="range"
             min="0"
@@ -122,7 +115,7 @@ function InfoPanel({
         <label>
           <input
             type="checkbox"
-            checked={material.depthTest}
+            checked={material ? material.depthTest : false}
             onChange={() => onDepthTestToggle(object)}
           />
           Depth Test
@@ -132,7 +125,7 @@ function InfoPanel({
         <label>
           <input
             type="checkbox"
-            checked={material.depthWrite}
+            checked={material ? material.depthWrite : false}
             onChange={() => onDepthWriteToggle(object)}
           />
           Depth Write
@@ -142,30 +135,25 @@ function InfoPanel({
         <label>
           <input
             type="checkbox"
-            checked={material.alphaHash}
+            checked={material ? material.alphaHash : false}
             onChange={() => onAlphaHashToggle(object)}
           />
           Alpha Hash
         </label>
       </div>
       <div>
-        <label>Side</label>
-        <select
-          value={material.side}
-          onChange={(e) => onSideChange(object, parseInt(e.target.value))}
-        >
-          {sideOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
+        <label>Side:</label>
+        <select value={material ? material.side : THREE.FrontSide} onChange={handleSideChange}>
+          <option value={THREE.FrontSide}>Front Side</option>
+          <option value={THREE.BackSide}>Back Side</option>
+          <option value={THREE.DoubleSide}>Double Side</option>
         </select>
       </div>
       <div>
         <label>
           <input
             type="checkbox"
-            checked={material.flatShading}
+            checked={material ? material.flatShading : false}
             onChange={() => onFlatShadingToggle(object)}
           />
           Flat Shading
@@ -175,29 +163,27 @@ function InfoPanel({
         <label>
           <input
             type="checkbox"
-            checked={material.vertexColors !== THREE.NoColors}
+            checked={material ? material.vertexColors !== THREE.NoColors : false}
             onChange={() => onVertexColorsToggle(object)}
           />
           Vertex Colors
         </label>
       </div>
       <div>
-        <label>Geometry</label>
-        <select value={geometry.type} onChange={(e) => onGeometryChange(object, e.target.value)}>
-          {geometryOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
+        <label>Geometry:</label>
+        <select value={geometry ? geometry.type : ''} onChange={handleGeometryChange}>
+          <option value="ConeGeometry">Cone</option>
+          <option value="BoxGeometry">Box</option>
+          <option value="SphereGeometry">Sphere</option>
         </select>
       </div>
       <div>
-        <label>Size</label>
+        <label>Size:</label>
         <input
           type="number"
           step="0.1"
-          value={object.scale.x!== undefined ? object.scale.x : ''}
-          onChange={(e) => onSizeChange(object, parseFloat(e.target.value))}
+          value={object.scale.x || 1}
+          onChange={handleSizeChange}
         />
       </div>
       <div>
