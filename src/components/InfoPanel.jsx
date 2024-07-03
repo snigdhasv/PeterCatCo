@@ -26,6 +26,12 @@ function InfoPanel({
   const [side, setSide] = useState(THREE.FrontSide);
   const [opacity, setOpacity] = useState(1);
   const [isTransparent, setIsTransparent] = useState(false);
+  const [isToggledWireframe, setIsToggledWireframe] = useState(false);
+  const [isToggledDepthTest, setIsToggledDepthTest] = useState(false);
+  const [isToggledDepthWrite, setIsToggledDepthWrite] = useState(false);
+  const [isToggledAlphaHash, setIsToggledAlphaHash] = useState(false);
+  const [isToggledFlatShading, setIsToggledFlatShading] = useState(false);
+  const [isToggledVertexColors, setIsToggledVertexColors] = useState(false);
 
   useEffect(() => {
     if (object) {
@@ -41,21 +47,26 @@ function InfoPanel({
 
   if (!object) return null;
 
+  const handleOpacityChange = (value) => {
+    setOpacity(value);
+    onOpacityChange(object, value);
+  };
+
   return (
     <div className="info-panel">
-      <div className="info-header">
+      <div className="header">
         <h2>Info Panel</h2>
         <button className="close-button" onClick={onClose}>X</button>
       </div>
       <p><strong>Name:</strong> {object.name ? object.name : 'Unnamed'}</p>
-      <div>
+      <div className="control-group">
         <label>Color:</label>
         <input type="color" value={color} onChange={(e) => {
           setColor(e.target.value);
           onColorChange(object, e.target.value);
         }} />
       </div>
-      <div>
+      <div className="control-group">
         <label>Material:</label>
         <select value={material} onChange={(e) => {
           setMaterial(e.target.value);
@@ -71,56 +82,84 @@ function InfoPanel({
           <option value="MeshMatcapMaterial">Matcap</option>
         </select>
       </div>
-      <div>
+      <div className="control-group">
         <label>Wireframe:</label>
-        <button onClick={() => onWireframeToggle(object)}>
-          Toggle Wireframe
+        <button
+          className={`toggle-button ${isToggledWireframe ? 'on' : 'off'}`}
+          onClick={() => {
+            onWireframeToggle(object);
+            setIsToggledWireframe(!isToggledWireframe);
+          }}
+        >
+          {isToggledWireframe ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
-      <label>Transparent:</label>
-        <button onClick={() => {
-          onTransparentToggle(object);
-          setIsTransparent(!isTransparent); // Update transparency toggle state
-        }}>
-          {isTransparent ? 'Disable Transparency' : 'Enable Transparency'}
+      <div className="control-group">
+        <label>Transparent:</label>
+        <button
+          className={`toggle-button ${isTransparent ? 'on' : 'off'}`}
+          onClick={() => {
+            onTransparentToggle(object);
+            setIsTransparent(!isTransparent);
+          }}
+        >
+          {isTransparent ? 'On' : 'Off'}
         </button>
       </div>
-      {isTransparent && ( // Conditionally render opacity controls when transparency is enabled
-        <div>
+      {isTransparent && (
+        <div className="control-group">
           <label>Opacity:</label>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={opacity}
-            onChange={(e) => {
-              setOpacity(e.target.value);
-              onOpacityChange(object, e.target.value);
-            }}
-          />
+          <div className="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={opacity}
+              onChange={(e) => handleOpacityChange(parseFloat(e.target.value))}
+              className="opacity-slider"
+            />
+            <output className="opacity-output">{`${(opacity * 100).toFixed(0)}%`}</output>
+          </div>
         </div>
       )}
-      <div>
+      <div className="control-group">
         <label>Depth Test:</label>
-        <button onClick={() => onDepthTestToggle(object)}>
-          Toggle Depth Test
+        <button
+          className={`toggle-button ${isToggledDepthTest ? 'on' : 'off'}`}
+          onClick={() => {
+            onDepthTestToggle(object);
+            setIsToggledDepthTest(!isToggledDepthTest);
+          }}
+        >
+          {isToggledDepthTest ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
+      <div className="control-group">
         <label>Depth Write:</label>
-        <button onClick={() => onDepthWriteToggle(object)}>
-          Toggle Depth Write
+        <button
+          className={`toggle-button ${isToggledDepthWrite ? 'on' : 'off'}`}
+          onClick={() => {
+            onDepthWriteToggle(object);
+            setIsToggledDepthWrite(!isToggledDepthWrite);
+          }}
+        >
+          {isToggledDepthWrite ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
+      <div className="control-group">
         <label>Alpha Hash:</label>
-        <button onClick={() => onAlphaHashToggle(object)}>
-          Toggle Alpha Hash
+        <button
+          className={`toggle-button ${isToggledAlphaHash ? 'on' : 'off'}`}
+          onClick={() => {
+            onAlphaHashToggle(object);
+            setIsToggledAlphaHash(!isToggledAlphaHash);
+          }}
+        >
+          {isToggledAlphaHash ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
+      <div className="control-group">
         <label>Side:</label>
         <select value={side} onChange={(e) => {
           setSide(e.target.value);
@@ -131,19 +170,31 @@ function InfoPanel({
           <option value={THREE.DoubleSide}>Double</option>
         </select>
       </div>
-      <div>
+      <div className="control-group">
         <label>Flat Shading:</label>
-        <button onClick={() => onFlatShadingToggle(object)}>
-          Toggle Flat Shading
+        <button
+          className={`toggle-button ${isToggledFlatShading ? 'on' : 'off'}`}
+          onClick={() => {
+            onFlatShadingToggle(object);
+            setIsToggledFlatShading(!isToggledFlatShading);
+          }}
+        >
+          {isToggledFlatShading ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
+      <div className="control-group">
         <label>Vertex Colors:</label>
-        <button onClick={() => onVertexColorsToggle(object)}>
-          Toggle Vertex Colors
+        <button
+          className={`toggle-button ${isToggledVertexColors ? 'on' : 'off'}`}
+          onClick={() => {
+            onVertexColorsToggle(object);
+            setIsToggledVertexColors(!isToggledVertexColors);
+          }}
+        >
+          {isToggledVertexColors ? 'On' : 'Off'}
         </button>
       </div>
-      <div>
+      <div className="control-group">
         <label>Geometry:</label>
         <select value={geometry} onChange={(e) => {
           setGeometry(e.target.value);
@@ -156,7 +207,7 @@ function InfoPanel({
           <option value="TorusGeometry">Torus</option>
         </select>
       </div>
-      <div>
+      <div className="control-group">
         <label>Size:</label>
         <input type="number" value={size} onChange={(e) => {
           setSize(e.target.value);

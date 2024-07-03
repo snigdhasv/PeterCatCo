@@ -3,11 +3,9 @@ import { useAtom } from 'jotai';
 import { scenesAtom, slideAtom } from './Experience';
 import { storage } from './Firebase';
 import CloudLoader from './CloudLoaderComponent';
-import leftArrow from '../assets/left-arrow.svg';
-import rightArrow from '../assets/right-arrow.svg';
-import logo from '../assets/logo.svg';
 import trash from '../assets/trash.svg'
 import '../index.css';
+import './info_panel.css'
 import { ref as storageRef, uploadBytes } from 'firebase/storage';
 
 export const Overlay = () => {
