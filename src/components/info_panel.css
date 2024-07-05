@@ -37,6 +37,7 @@
   color: #e40a0a;
   border: none;
   font-size: 1.2rem;
+  font-weight: 1000;
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
 }
@@ -47,8 +48,9 @@
 }
 
 .info-panel p {
-  margin: 10px 0;
-  color: #66b2ff;
+  margin: 1rem 0;
+  font-size: 1rem;
+  color: #7FDEFF;
 }
 
 .control-group {
@@ -58,7 +60,7 @@
 .control-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #66b2ff;
+  color: #7FDEFF;
   font-weight: 600;
 }
 

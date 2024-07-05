@@ -99,7 +99,7 @@ export const Scene = forwardRef(({onObjectClick, onObjectHover, path, ...props }
                     />
                 </mesh>
                 <Effects />
-                <OrbitControls enablePan={false} enableZoom={true} minPolarAngle={Math.PI / 2.2} maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={20}/>
+                <OrbitControls enablePan={false} enableZoom={true}  maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={50}/>
                 
             </group>
         </>
