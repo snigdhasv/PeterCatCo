@@ -20,13 +20,13 @@ body {
 
 ul { 
 	list-style: none;
-	margin: 0;
+	margin: 1.5rem;
 	padding: 0;
   position: absolute;
   z-index: 20;
 	margin-left: auto; 
 	margin-right: auto;
-	background-color: #05043e;
+	background-color: #515154;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -56,7 +56,7 @@ a {
 	border-radius: 8px;
 	position: relative;
 	&:hover, &:focus, &.active {
-		background-color: #30305a;
+		background-color: #ffffff;
 		outline: 0;
 		span { 
 			transform: scale(1);
@@ -72,7 +72,7 @@ a {
 	
 	span {
 		position: absolute;
-		background-color: #30305a;
+		background-color: #214463;
 		white-space: nowrap;
 		padding: .5rem 1rem;
 		border-radius: 6px;
@@ -87,7 +87,7 @@ a {
 			width: 12px;
 			height: 12px;
 			position: absolute;
-			background-color: #30305a;
+			background-color: #ffffff;
 			left: -5px;
 			top: 50%;
 			transform: translatey(-50%) rotate(45deg);
@@ -205,3 +205,32 @@ summary {
 	}
 }
 
+/* CSS for MenuPanel */
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: calc(100% + 1rem); /* Adjust the distance from the title */
+	z-index: 100; /* Ensure it's above other elements */
+	background-color: #214463; /* Background color for the dropdown */
+	border-radius: 8px; /* Rounded corners */
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+	padding: 0.5rem 0; /* Padding inside the dropdown */
+  
+	li {
+	  width: 100%; /* Ensure full width */
+	}
+  
+	span {
+	  display: block;
+	  padding: 0.75rem 1rem; /* Padding inside each item */
+	  color: #ffffff; /* Text color */
+	  font-size: 0.875rem; /* Font size */
+	  transition: background-color 0.15s ease; /* Smooth background color transition */
+  
+	  &:hover {
+		background-color: #185adb; /* Darker background color on hover */
+		cursor: pointer; /* Pointer cursor on hover */
+	  }
+	}
+  }
+  
