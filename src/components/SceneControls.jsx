@@ -1,26 +1,67 @@
 import * as THREE from 'three';
 
-const useSceneControls = (setSelectedObject) => {
-  const updateMaterial = (object, updater) => {
-    const newMaterial = object.material.clone();
-    updater(newMaterial);
-    object.material = newMaterial;
-    setSelectedObject({ ...object });
+const useSceneControls = (setSelectedObjectState) => {
+  const updateSelectedObject = () => {
+    setSelectedObjectState((prev) => prev + 1); // Assuming setSelectedObjectState increments state
   };
 
   const handleColorChange = (object, color) => {
-    updateMaterial(object, (material) => material.color.set(color));
+    const newMaterial = object.material.clone();
+    newMaterial.color.set(color);
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
-  const handleMaterialChange = (object, materialType) => {
+  const handleMaterialChange = (object, newMaterialType) => {
     const oldMaterial = object.material;
-    // Create a new material of the specified type
-    const newMaterial = new THREE[materialType]();
-    // Copy essential properties from the old material
-    newMaterial.color = oldMaterial.color.clone();
+  
+    let newMaterial;
+    switch (newMaterialType) {
+      case 'MeshBasicMaterial':
+        newMaterial = new THREE.MeshBasicMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshLambertMaterial':
+        newMaterial = new THREE.MeshLambertMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshPhongMaterial':
+        newMaterial = new THREE.MeshPhongMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshStandardMaterial':
+        newMaterial = new THREE.MeshStandardMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshNormalMaterial':
+        newMaterial = new THREE.MeshNormalMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshPhysicalMaterial':
+        newMaterial = new THREE.MeshPhysicalMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshToonMaterial':
+        newMaterial = new THREE.MeshToonMaterial({ color: oldMaterial.color });
+        break;
+      case 'MeshMatcapMaterial':
+        newMaterial = new THREE.MeshMatcapMaterial({ color: oldMaterial.color });
+        break;
+      default:
+        newMaterial = new THREE.MeshBasicMaterial({ color: oldMaterial.color });
+    }
+  
+    // Reset settings
     newMaterial.transparent = oldMaterial.transparent;
     newMaterial.opacity = oldMaterial.opacity;
     newMaterial.wireframe = oldMaterial.wireframe;
+    newMaterial.flatShading = oldMaterial.flatShading;
+    newMaterial.alphaTest = oldMaterial.alphaTest;
+    newMaterial.depthTest = oldMaterial.depthTest;
+    newMaterial.depthWrite = oldMaterial.depthWrite;
+    newMaterial.side = oldMaterial.side;
+    newMaterial.vertexColors = oldMaterial.vertexColors;
+    newMaterial.color = oldMaterial.color;
+
+    // Check and reset alphaHash
+    if (newMaterial.alphaHash !== undefined) {
+      newMaterial.alphaHash = oldMaterial.alphaHash;
+    }
+  
     // Dispose of the old material
     oldMaterial.dispose();
   
@@ -28,57 +69,97 @@ const useSceneControls = (setSelectedObject) => {
     object.material = newMaterial;
   
     // Update the state to reflect the changes
-    setSelectedObject({ ...object });
+    updateSelectedObject();
   };
   
 
   const handleWireframeToggle = (object) => {
-    updateMaterial(object, (material) => material.wireframe = !material.wireframe);
+    const newMaterial = object.material.clone();
+    newMaterial.wireframe = !newMaterial.wireframe;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
   const handleTransparentToggle = (object) => {
-    updateMaterial(object, (material) => material.transparent = !material.transparent);
+    const newMaterial = object.material.clone();
+    newMaterial.transparent = !newMaterial.transparent;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
-  const handleOpacityChange = (object, opacity) => {
-    updateMaterial(object, (material) => {
-      material.opacity = parseFloat(opacity); // Ensure the opacity is a number
-    });
-  };  
+  const handleOpacityChange = (object, value) => {
+    const newMaterial = object.material.clone();
+    newMaterial.opacity = value;
+    object.material = newMaterial;
+    updateSelectedObject();
+  };
 
   const handleDepthTestToggle = (object) => {
-    updateMaterial(object, (material) => material.depthTest = !material.depthTest);
+    const newMaterial = object.material.clone();
+    newMaterial.depthTest = !newMaterial.depthTest;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
   const handleDepthWriteToggle = (object) => {
-    updateMaterial(object, (material) => material.depthWrite = !material.depthWrite);
+    const newMaterial = object.material.clone();
+    newMaterial.depthWrite = !newMaterial.depthWrite;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
   const handleAlphaHashToggle = (object) => {
-    updateMaterial(object, (material) => material.alphaHash = !material.alphaHash);
+    const newMaterial = object.material.clone();
+    newMaterial.alphaHash = !newMaterial.alphaHash;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
-  const handleSideChange = (object, side) => {
-    updateMaterial(object, (material) => material.side = side);
+  const handleSideChange = (object, value) => {
+    const newMaterial = object.material.clone();
+    newMaterial.side = value;
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
   const handleFlatShadingToggle = (object) => {
-    updateMaterial(object, (material) => material.flatShading = !material.flatShading);
+    const newMaterial = object.material.clone();
+    newMaterial.flatShading = !newMaterial.flatShading;
+    newMaterial.needsUpdate = true; // Ensure changes are applied
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
   const handleVertexColorsToggle = (object) => {
-    updateMaterial(object, (material) => material.vertexColors = material.vertexColors === THREE.NoColors ? THREE.VertexColors : THREE.NoColors);
+    const newMaterial = object.material.clone();
+    newMaterial.vertexColors = newMaterial.vertexColors === THREE.NoColors ? THREE.VertexColors : THREE.NoColors;
+    newMaterial.needsUpdate = true; // Ensure changes are applied
+    object.material = newMaterial;
+    updateSelectedObject();
   };
 
-  const handleGeometryChange = (object, geometryType) => {
-    const newGeometry = new THREE[geometryType]();
+  const handleGeometryChange = (object, newGeometryType) => {
+    let newGeometry;
+    switch (newGeometryType) {
+      case 'ConeGeometry':
+        newGeometry = new THREE.ConeGeometry(1, 1, 32);
+        break;
+      case 'BoxGeometry':
+        newGeometry = new THREE.BoxGeometry(1, 1, 1);
+        break;
+      case 'SphereGeometry':
+        newGeometry = new THREE.SphereGeometry(1, 32, 32);
+        break;
+      default:
+        newGeometry = new THREE.BoxGeometry(1, 1, 1);
+    }
     object.geometry = newGeometry;
-    setSelectedObject({ ...object });
+    updateSelectedObject();
   };
 
   const handleSizeChange = (object, size) => {
     object.scale.set(size, size, size);
-    setSelectedObject({ ...object });
+    updateSelectedObject();
   };
 
   return {
