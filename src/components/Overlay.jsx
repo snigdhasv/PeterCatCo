@@ -7,6 +7,7 @@ import trash from '../assets/trash.svg'
 import '../index.css';
 import './info_panel.css'
 import { ref as storageRef, uploadBytes } from 'firebase/storage';
+import { MenuPanel } from './MenuPanel';
 
 export const Overlay = () => {
   const [slide, setSlide] = useAtom(slideAtom);
@@ -93,17 +94,7 @@ export const Overlay = () => {
     }
   };
 
-  const handleDelete = (index) => {
-    if (scenes.length > 1) {
-      const confirmDeletion = window.confirm("Are you sure you want to delete this model?");
-      if (confirmDeletion) {
-        scenes.splice(index, 1);
-        setSlide((prev) => (prev < scenes.length - 1 ? prev + 1 : 0));
-      }
-    } else {
-      alert("Cannot delete the last remaining model.");
-    }
-  };
+
 
   const handlePageChange = (pageNumber) => {
     setSlide(pageNumber);
@@ -145,13 +136,8 @@ export const Overlay = () => {
               Export To Firebase
             </button>
           </div>
+          <MenuPanel/>
         </div>
-        <img
-          src = {trash}
-          alt="delete"
-          className="delete"
-          onClick={()=> handleDelete(slide)}
-        />
         <div className="content">
           <h1 className="title">{scenes[slide].name}</h1>
           <div className="pages">
@@ -173,7 +159,7 @@ export const Overlay = () => {
               &raquo;    
             </button>
           </div>
-
+          
         </div>
         
       </>

@@ -26,7 +26,7 @@ const useObjectControls = (setSelectedObject, setShowInfoPanel) => {
     }
   };
 
-  return { handleObjectClick, handleObjectHover };
+  return { handleObjectClick, handleObjectHover, highlightedMesh };
 };
 
 export default useObjectControls;

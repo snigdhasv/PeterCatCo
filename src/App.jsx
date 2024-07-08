@@ -8,6 +8,7 @@ import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
 import { scenes, slideAtom } from './components/Experience';
 import { Scene } from './components/Scene';
+// import { MenuPanel } from './components/MenuPanel';
 
 function App() {
   const [slide] = useAtom(slideAtom);
@@ -44,6 +45,7 @@ function App() {
   return (
     <>
       <Leva hidden />
+      {/* <MenuPanel/> */}
       <Overlay />
       <CanvasComponent ref={canvasRef} sceneRef={sceneRef} onObjectClick={handleObjectClick} onObjectHover={handleObjectHover} highlightedMesh={highlightedMesh}>
         <Scene
