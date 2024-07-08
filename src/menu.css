@@ -209,6 +209,8 @@ summary {
 .dropdown-menu {
 	position: absolute;
 	top: 100%;
+	display: flex;
+	
 	left: calc(100% + 1rem); /* Adjust the distance from the title */
 	z-index: 100; /* Ensure it's above other elements */
 	background-color: #214463; /* Background color for the dropdown */

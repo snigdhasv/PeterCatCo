@@ -102,7 +102,7 @@ export const MenuPanel = () => {
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
           <g id="SVGRepo_iconCarrier"> <title>animation_line</title> <g id="b9dc111b-c0fc-4dae-9c72-b1a6d11e341d" data-name="Layer 3"> <path d="M10.16,31.71a4.4,4.4,0,0,1-4.64-1A4.34,4.34,0,0,1,4.23,27.6a4.41,4.41,0,0,1,.18-1.2,11.61,11.61,0,0,1-1-2.56,6.4,6.4,0,0,0,9.33,8.63A11.55,11.55,0,0,1,10.16,31.71Z"/> <path d="M18.41,27.68a7.61,7.61,0,0,1-9.08-1.26,7.58,7.58,0,0,1-1.27-9.06,14.26,14.26,0,0,1-.37-2.85,9.58,9.58,0,0,0,.22,13.33,9.63,9.63,0,0,0,13.35.22A14.46,14.46,0,0,1,18.41,27.68Z"/> <path d="M21.66,26.21a12.1,12.1,0,1,1,8.57-3.54h0A12.11,12.11,0,0,1,21.66,26.21ZM21.66,4A10.11,10.11,0,0,0,11.54,14.11a10,10,0,0,0,3,7.14,10.12,10.12,0,0,0,14.31,0A10.11,10.11,0,0,0,21.66,4Zm7.86,18h0Z"/> </g> </g>
           </svg>
-          <span onClick={()=>setAnimate()}>Animation</span>
+          <span onClick={()=>setAnimate(!animate)}>Animation</span>
           </a>
         </li>
         <li>
@@ -139,7 +139,7 @@ export const MenuPanel = () => {
         </li>
     {/* Firebase logo hover */}
         <li>
-          <a onClick={() => setShowDropdown(!showDropdown)} href="#">
+          <a  href="#">     {/*onClick={() => setShowDropdown(!showDropdown)} */}
           <svg  viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"/>
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
@@ -147,7 +147,7 @@ export const MenuPanel = () => {
           </svg>
             <span ref={hoverRef1} >Firebase</span>
           </a>
-          {isHovered1 && (                       //Dropdown menu when firebase title is hovered
+          { (                       //Dropdown menu when firebase title is hovered
             <ul className="dropdown-menu">
               <li>
                 <span onClick={handleExport} href="#">
@@ -157,14 +157,7 @@ export const MenuPanel = () => {
               <li>
                 <span href="#" onClick={() => fileInputRef.current.click()}>
                   Import from Firebase
-                </span>
-                <input
-                  type="file"
-                  accept=".glb,.gltf"              //subject to change
-                  onChange={handleImportDevice}
-                  style={{ display: 'none' }}
-                  ref={fileInputRef}
-                />
+                </span>    
               </li>
             </ul>
           )}
@@ -178,7 +171,7 @@ export const MenuPanel = () => {
           <g id="SVGRepo_iconCarrier"> <title>device-multiple</title> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"/> </g> <g id="icons_Q2" data-name="icons Q2"> <g> <path d="M42,23V41H34V23h8m2-4H32a2,2,0,0,0-2,2V43a2,2,0,0,0,2,2H44a2,2,0,0,0,2-2V21a2,2,0,0,0-2-2Z"/> <path d="M38,7H7A2,2,0,0,0,5,9V31a2,2,0,0,0,2,2H26V29H9V11H36v4h4V9A2,2,0,0,0,38,7Z"/> <path d="M26,37v4H4a2,2,0,0,1,0-4Z"/> </g> </g> </g> </g>
           </svg>
             <span ref={hoverRef2}>Local Device</span>
-            {isHovered2 && (                       //Dropdown menu when firebase title is hovered
+            { (                       //Dropdown menu when firebase title is hovered
             <ul className="dropdown-menu">
               <li>
                 <span onClick={handleExport} href="#">

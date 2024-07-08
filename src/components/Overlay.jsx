@@ -8,7 +8,14 @@ import rightArrow from '../assets/right-arrow.svg';
 import logo from '../assets/logo.svg';
 import trash from '../assets/trash.svg'
 import '../index.css';
+import { animateAtom } from './MenuPanel';
 import { ref as storageRef, uploadBytes } from 'firebase/storage';
+import KeyframesContainer from './KeyframesContainer';
+
+import playImage from '../assets/cssIcons/playButton.png';
+import pauseImage from '../assets/cssIcons/pauseButton.png';
+import loopActiveImage from '../assets/cssIcons/loopActive.png';
+import loopInactiveImage from '../assets/cssIcons/loopInactive.png';
 
 export const Overlay = () => {
   const [slide, setSlide] = useAtom(slideAtom);
@@ -16,6 +23,20 @@ export const Overlay = () => {
   const [visible, setVisible] = useState(false);
   const [scenes, setScenes] = useAtom(scenesAtom);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [animate,setAnimate] = useAtom(animateAtom);
+
+
+//These states are required for Keyframes Container 
+
+  const [exportTrigger, setExportTrigger] = useState(null);
+    const [importFile, setImportFile] = useState(null); 
+    const [animationControl, setAnimationControl] = useState('pause');
+    const [loop, setLoop] = useState(false);
+    const [availableAnimations, setAvailableAnimations] = useState([]);
+    const [selectedAnimations, setSelectedAnimations] = useState([]);
+    const [customAnimations, setCustomAnimations] = useState({});
+//end of keyframes container states
+
 
   useEffect(() => {
     setVisible(false);
@@ -64,36 +85,43 @@ export const Overlay = () => {
     }
   };
 
-  const handleExportDevice = () => {
-    const modelData = null; 
+  const importModel = (file, onLoad) => {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const contents = e.target.result;
+        const loader = new GLTFLoader();
+        loader.parse(contents, '', function (gltf) {
+            onLoad(gltf);
+        });
+    };
+    reader.readAsArrayBuffer(file);
+};
 
-    const blob = new Blob([modelData], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'model.glb';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
-  const handleExport = async () => {
-    const modelData = await getModelData();
-    if (modelData) {
-      const modelName = prompt('Enter a name for the model:');
-      if (modelName) {
-        try {
-          const modelRef = storageRef(storage, `${modelName}.glb`);
-          const blob = new Blob([modelData], { type: 'application/octet-stream' });
-          await uploadBytes(modelRef, blob);
-          alert('Model uploaded successfully!');
-        } catch (error) {
-          console.error('Error uploading model:', error);
-        }
-      }
+  const togglePlayPause = () => {
+    setAnimationControl(prev => (prev === 'play' ? 'pause' : 'play'));
+    console.log('Animation control:', animationControl);
+     };
+                                
+    const handleAnimationSelect = (animationName) => {
+    setSelectedAnimations(prev => {
+    if (prev.includes(animationName)) {
+    return prev.filter(name => name !== animationName);
     } else {
-      alert('No model data available to export!');
+    return [...prev, animationName];
     }
-  };
+        });
+    console.log('Selected animations:', selectedAnimations);
+     };
+                                
+     const handleAddNewAnimation = (newAnimation) => {
+    setAvailableAnimations(prev => [...prev, newAnimation.name]);
+      setCustomAnimations(prev => ({
+    ...prev,
+     [newAnimation.name]: newAnimation
+    }));
+    console.log('New animation added:', newAnimation);
+     };
 
   const handleDelete = (index) => {
     if (scenes.length > 1) {
@@ -113,8 +141,26 @@ export const Overlay = () => {
   
 
   return (
+    
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
       <>
+      {animate&&<KeyframesContainer
+                    handleImport={handleImportDevice}
+                    exportTrigger={exportTrigger}
+                    togglePlayPause={togglePlayPause}
+                    animationControl={animationControl}
+                    playImage={playImage}
+                    pauseImage={pauseImage}
+                    loop={loop}
+                    setLoop={setLoop}
+                    loopActiveImage={loopActiveImage}
+                    loopInactiveImage={loopInactiveImage}
+                    availableAnimations={availableAnimations}
+                    selectedAnimations={selectedAnimations}
+                    handleAnimationSelect={handleAnimationSelect}
+                    onAddNewAnimation={handleAddNewAnimation}
+                />}
+        {!animate}
         <div className="nav">
           <div className="arrows">
           <img

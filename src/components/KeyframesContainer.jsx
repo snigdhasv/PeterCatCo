@@ -1,7 +1,11 @@
 // KeyframesContainer.js
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
-//import { importModel } from './importUtils';
+import '../keyframe.css'
+//import { importModel } from './importUtils';\
+
+
+
 
 const KeyframesContainer = ({
                                 handleImport,
@@ -19,7 +23,7 @@ const KeyframesContainer = ({
                                 handleAnimationSelect,
                                 onAddNewAnimation
                             }) => {
-                
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [newAnimation, setNewAnimation] = useState({
         name: '',
@@ -28,18 +32,6 @@ const KeyframesContainer = ({
         rotation: [0, 0, 0],
         duration: 5
     });
-
-    const importModel = (file, onLoad) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const contents = e.target.result;
-            const loader = new GLTFLoader();
-            loader.parse(contents, '', function (gltf) {
-                onLoad(gltf);
-            });
-        };
-        reader.readAsArrayBuffer(file);
-    };
 
     const handleInputChange = (e, type, index) => {
         const value = type === 'name' ? e.target.value : parseFloat(e.target.value);
