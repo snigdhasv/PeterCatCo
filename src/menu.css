@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
 	--color-light: rgb(225, 203, 203);
-	--color-mid: rgb(113, 54, 54);
+	--color-mid: rgb(221, 82, 82);
 	--color-dark: rgb(49, 40, 40);
   }
   
   #wrapper {
+	font-family: "Exo 2", sans-serif;
+	color: #f5f0f0;
 	position: fixed;
 	bottom: 0;
 	left: 0;

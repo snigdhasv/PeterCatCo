@@ -7,7 +7,6 @@ import trash from '../assets/trash.svg'
 import '../index.css';
 import './info_panel.css'
 import { ref as storageRef, uploadBytes } from 'firebase/storage';
-import { MenuPanel } from './MenuPanel';
 
 export const Overlay = () => {
   const [slide, setSlide] = useAtom(slideAtom);
@@ -136,7 +135,6 @@ export const Overlay = () => {
               Export To Firebase
             </button>
           </div>
-          <MenuPanel/>
         </div>
         <div className="content">
           <h1 className="title">{scenes[slide].name}</h1>

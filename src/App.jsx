@@ -8,7 +8,7 @@ import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
 import { scenes, slideAtom } from './components/Experience';
 import { Scene } from './components/Scene';
-// import { MenuPanel } from './components/MenuPanel';
+import { MenuPanel, TexturesMaterialsAtom } from './components/MenuPanel';
 
 function App() {
   const [slide] = useAtom(slideAtom);
@@ -16,6 +16,7 @@ function App() {
   const [showInfoPanel, setShowInfoPanel] = useState(true);
   const sceneRef = useRef();
   const canvasRef = useRef();
+  const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
   
   // Object controls hook
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
@@ -45,8 +46,8 @@ function App() {
   return (
     <>
       <Leva hidden />
-      {/* <MenuPanel/> */}
       <Overlay />
+      
       <CanvasComponent ref={canvasRef} sceneRef={sceneRef} onObjectClick={handleObjectClick} onObjectHover={handleObjectHover} highlightedMesh={highlightedMesh}>
         <Scene
           ref={sceneRef}
@@ -56,7 +57,8 @@ function App() {
           {...scenes[slide]}
         />
       </CanvasComponent>
-      {selectedObject && (
+      <MenuPanel/>
+      {selectedObject && TexturesMaterials && (
         <InfoPanel
           object={selectedObject}
           onClose={handleCloseInfoPanel}
@@ -75,6 +77,7 @@ function App() {
           onSizeChange={handleSizeChange}
         />
       )}
+      {!TexturesMaterials}
     </>
   );
 }
