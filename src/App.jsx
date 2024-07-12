@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Scene } from './components/Scene';
 import { Canvas } from '@react-three/fiber';
@@ -12,8 +11,7 @@ import { Overlay } from './components/Overlay';
 import InfoPanel from './components/InfoPanel';
 import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
-import { MenuPanel, TexturesMaterialsAtom} from './components/MenuPanel';
-
+import { MenuPanel, TexturesMaterialsAtom, LightsAtom } from './components/MenuPanel';
 
 function App() {
   const {
@@ -36,6 +34,7 @@ function App() {
   const sceneRef = useRef();
   const canvasRef = useRef();
   const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
+  const [Light, setLights] = useAtom(LightsAtom);
 
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
 
@@ -71,8 +70,8 @@ function App() {
         <Experience />
         <Scene
           ref={sceneRef}
-          onObjectClick={handleObjectClick}
-          onObjectHover={handleObjectHover}
+          onObjectClick={handleObjectClick} // Ensure this is passed correctly
+          onObjectHover={handleObjectHover} // Ensure this is passed correctly
           highlightedMesh={highlightedMesh}
           {...scenes[slide]}
         />
@@ -99,19 +98,22 @@ function App() {
         />
       )}
       {!TexturesMaterials}
+      {Light && (
         <LightControls
-        lights={lights}
-        updateLight={updateLight}
-        setExpandedLightId={setExpandedLightId} // Correctly pass this prop
-        expandedLightId={expandedLightId} // Ensure this prop is also passed
-        addLight={addLight}
-        deleteLight={deleteLight}
-        resetLights={resetLights}
-        toggleGlobalShadows={toggleGlobalShadows}
-        globalShadows={globalShadows}
-        globalExposure={globalExposure}
-        updateGlobalExposure={updateGlobalExposure}
-      />
+          lights={lights}
+          updateLight={updateLight}
+          setExpandedLightId={setExpandedLightId} // Correctly pass this prop
+          expandedLightId={expandedLightId} // Ensure this prop is also passed
+          addLight={addLight}
+          deleteLight={deleteLight}
+          resetLights={resetLights}
+          toggleGlobalShadows={toggleGlobalShadows}
+          globalShadows={globalShadows}
+          globalExposure={globalExposure}
+          updateGlobalExposure={updateGlobalExposure}
+        />
+      )}
+      {!Lights}
     </>
   );
 }

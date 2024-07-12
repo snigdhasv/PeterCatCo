@@ -100,39 +100,11 @@ export const Overlay = () => {
   const handlePageChange = (pageNumber) => {
     setSlide(pageNumber);
   };
-  
-  const {
-    lights,
-    globalExposure,
-    addLight,
-    updateLight,
-    deleteLight,
-    resetLights,
-    toggleGlobalShadows,
-    globalShadows,
-    updateGlobalExposure,
-    expandedLightId,
-    setExpandedLightId,
-  } = useLights();
 
   return (
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
       <>
-      <Lights lights={lights} globalExposure={globalExposure} />
         <div className="nav-bar">
-        <LightControls
-        lights={lights}
-        updateLight={updateLight}
-        setExpandedLightId={setExpandedLightId} // Correctly pass this prop
-        expandedLightId={expandedLightId} // Ensure this prop is also passed
-        addLight={addLight}
-        deleteLight={deleteLight}
-        resetLights={resetLights}
-        toggleGlobalShadows={toggleGlobalShadows}
-        globalShadows={globalShadows}
-        globalExposure={globalExposure}
-        updateGlobalExposure={updateGlobalExposure}
-      />
           <div className="nav-left">
             <input
               type="file"

@@ -5,10 +5,12 @@ import '../menu.css';
 
 export const animateAtom = atom(false);       
 export const TexturesMaterialsAtom = atom(false);
+export const LightsAtom = atom(false);
 
 export const MenuPanel = () => {
   const [slide, setSlide] = useAtom(slideAtom);
   const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
+  const [Light, setLights] = useAtom(LightsAtom);
 
   const handleDelete = (index) => {
     if (scenes.length > 1) {
@@ -26,7 +28,7 @@ export const MenuPanel = () => {
     <>
       <div id="wrapper">
           <header>
-            <div className="iconDiv" tooltip="Lights" tabIndex="0" >
+            <div className="iconDiv" tooltip="Lights" tabIndex="0" onClick={()=>setLights(!Light)} style={{ backgroundColor: Light ? 'rgb(221, 82, 82)' : 'transparent' }}>
               <div className="iconSVG">
               <svg fill="#e0e0e0" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" stroke="#e0e0e0" strokeWidth="0.00036"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="0.8640000000000001"></g><g id="SVGRepo_iconCarrier"> <title>animation_line</title> <g id="b9dc111b-c0fc-4dae-9c72-b1a6d11e341d" data-name="Layer 3"> <path d="M10.16,31.71a4.4,4.4,0,0,1-4.64-1A4.34,4.34,0,0,1,4.23,27.6a4.41,4.41,0,0,1,.18-1.2,11.61,11.61,0,0,1-1-2.56,6.4,6.4,0,0,0,9.33,8.63A11.55,11.55,0,0,1,10.16,31.71Z"></path> <path d="M18.41,27.68a7.61,7.61,0,0,1-9.08-1.26,7.58,7.58,0,0,1-1.27-9.06,14.26,14.26,0,0,1-.37-2.85,9.58,9.58,0,0,0,.22,13.33,9.63,9.63,0,0,0,13.35.22A14.46,14.46,0,0,1,18.41,27.68Z"></path> <path d="M21.66,26.21a12.1,12.1,0,1,1,8.57-3.54h0A12.11,12.11,0,0,1,21.66,26.21ZM21.66,4A10.11,10.11,0,0,0,11.54,14.11a10,10,0,0,0,3,7.14,10.12,10.12,0,0,0,14.31,0A10.11,10.11,0,0,0,21.66,4Zm7.86,18h0Z"></path> </g> </g></svg>
               </div>
