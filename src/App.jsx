@@ -54,7 +54,7 @@ function App() {
     handleSizeChange,
   } = useSceneControls(() => {});
 
-  const handleCloseInfoPanel = () => {
+  const handleClosePanel = () => {
     setShowInfoPanel(false);
     setSelectedObject(null);
   };
@@ -82,7 +82,7 @@ function App() {
       {selectedObject && TexturesMaterials && (
         <InfoPanel
           object={selectedObject}
-          onClose={handleCloseInfoPanel}
+          onClose={handleClosePanel}
           onColorChange={handleColorChange}
           onMaterialChange={handleMaterialChange}
           onWireframeToggle={handleWireframeToggle}

@@ -1,92 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+
 .light-controls-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-    width: 300px;
-    z-index: 100;
-    cursor: pointer;
-  }
-  
-  .controls-header {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .controls-header button,
-  .controls-header label {
-    margin-bottom: 10px;
-    font-family: "Exo 2", sans-serif;
-    background-color: #de1d1d;
-    border: none;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .controls-header button:hover,
-  .controls-header label:hover {
-    background-color: #f44336;
-  }
-  
-  .light-control {
-    margin-top: 10px;
-  }
-  
-  .light-control h3 {
-    margin: 0;
-    padding: 10px;
-    background-color: #de1d1d;
+  font-family: 'Exo 2', sans-serif;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 22rem;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #f0f0f0;
+  padding: 2rem;
+  overflow-y: auto;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header h2 {
+  font-family: 'Racing Sans One', sans-serif;
+  font-size: 1.5rem;
+  color: #ff0000;
+}
+
+.controls-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.controls-header button,
+.controls-header label {
+  font-family: 'Exo 2', sans-serif;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #f0f0f0;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.controls-header button:hover,
+.controls-header label:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.controls-header label input[type="range"] {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.light-control {
+  margin-bottom: 1.5rem;
+}
+
+.drag-handle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.drag-handle h3 {
+  font-size: 1.25rem;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: #e40a0a;
+  border: none;
+  font-size: 1rem;
+  font-weight: 1000;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.delete-button:hover {
+  color: #ff4040;
+  transform: rotate(90deg);
+}
+
+.Exposure-slider{
+  width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) calc((var(--value) - var(--min)) * 100% / (var(--max) - var(--min))), rgba(255, 255, 255, 0.3) calc((var(--value) - var(--min)) * 100% / (var(--max) - var(--min))), rgba(255, 255, 255, 0.3) 100%);
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .15s ease-in-out;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .light-control h3:hover {
-    background-color: #f44336;
-  }
-  
-  .controls {
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
-  .controls label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .controls input[type="range"],
-  .controls input[type="number"] {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  /* Lights styles */
-  .light {
-    position: relative;
-  }
-  
-  .light .primitive {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* App styles */
-  canvas {
-    display: block;
-  }
-  
-  .leva-hidden {
-    display: none;
-  }
-  
+}
+.Exposure-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.Exposure-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls label {
+  font-weight: 600;
+  color: #7FDEFF;
+}
+
+.controls input[type="number"],
+.controls input[type="range"],
+.controls input[type="color"],
+.controls select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #f0f0f0;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  appearance: none;
+}
+
+.controls input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) calc((var(--value) - var(--min)) * 100% / (var(--max) - var(--min))), rgba(255, 255, 255, 0.3) calc((var(--value) - var(--min)) * 100% / (var(--max) - var(--min))), rgba(255, 255, 255, 0.3) 100%);
+  border-radius: 5px;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.slider-output{
+  position: absolute;
+  top: -30px;
+  right: 0;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+/* Scrollbar Styling */
+.light-controls-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.light-controls-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+}
+
+.light-controls-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.light-controls-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

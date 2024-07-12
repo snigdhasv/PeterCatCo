@@ -17,7 +17,6 @@ function InfoPanel({
   onVertexColorsToggle,
   onGeometryChange,
   onSizeChange,
-  onExport,
 }) {
   const [color, setColor] = useState('#ffffff');
   const [material, setMaterial] = useState('MeshBasicMaterial');
