@@ -7,12 +7,17 @@ import {
     MeshReflectorMaterial,
 } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { useLoader } from "@react-three/fiber";
+import { useLoader, useThree } from "@react-three/fiber";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import React, { forwardRef, useEffect } from "react";
-import {Effects} from "./Effect"
+import { Effects } from "./Effect";
+import * as THREE from 'three';
 
 export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props }, ref) => {
+    const { gl, scene: threeScene } = useThree();
+    gl.shadowMap.enabled = true;
+    gl.shadowMap.type = THREE.PCFSoftShadowMap;
+
     const { scene } = useLoader(GLTFLoader, path, (loader) => {
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
@@ -55,13 +60,12 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
             <group {...props} dispose={null}>
                 <PerspectiveCamera makeDefault position={[0, 0, 12]} near={0.5} />
                 <primitive object={scene} scale={1.5 * ratioScale} rotation={[0, Math.PI / 1.5, 0]}
-                    onPointerUp={handlePointerUp} // Ensure this is passed correctly
-                    onPointerOver={handlePointerOver} // Ensure this is passed correctly
-                    onPointerOut={handlePointerOut} // Ensure this is passed correctly
+                    onPointerUp={handlePointerUp} 
+                    onPointerOver={handlePointerOver}
+                    onPointerOut={handlePointerOut}
                 />
                 
                 <hemisphereLight intensity={0.5} />
-                {/* <ContactShadows resolution={1024} frames={1} position={[0,0, 0]} scale={15} blur={0.7} opacity={1} far={25} /> */}
                 
                 <mesh scale={3 * ratioScale} position={[3 * ratioScale, -0.1, -0.8]} rotation={[-Math.PI / 2, 0, Math.PI / 2.5]}>
                     <ringGeometry args={[0.9, 1, 4, 1]} />
@@ -74,15 +78,16 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
                 
                 <Environment background>
                     <color attach="background" args={["#15151a"]} />
-                    <Lightformer intensity={1.5} rotation-x={Math.PI / 2} position={[0, 4, -9]} scale={[10, 1, 1]} />
+                    <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, -9]} scale={[10, 1, 1]} />
                     <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, -6]} scale={[10, 1, 1]} />
-                    <Lightformer intensity={1.5} rotation-x={Math.PI / 2} position={[0, 4, -3]} scale={[10, 1, 1]} />
+                    <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, -3]} scale={[10, 1, 1]} />
                     <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, 0]} scale={[10, 1, 1]} />
-                    <Lightformer intensity={1.5} rotation-x={Math.PI / 2} position={[0, 4, 3]} scale={[10, 1, 1]} />
+                    <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, 3]} scale={[10, 1, 1]} />
                     <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, 6]} scale={[10, 1, 1]} />
-                    <Lightformer intensity={1.5} rotation-x={Math.PI / 2} position={[0, 4, 9]} scale={[10, 1, 1]} />
+                    <Lightformer intensity={1} rotation-x={Math.PI / 2} position={[0, 4, 9]} scale={[10, 1, 1]} />
                 </Environment>
-                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} scale={[100, 100, 1]}>
+                
+                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} scale={[100, 100, 1]} receiveShadow>
                     <planeGeometry args={[100, 100]} />
                     <MeshReflectorMaterial 
                         blur={[400, 100]}
@@ -92,7 +97,7 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
                         depthScale={1}
                         minDepthThreshold={0.85}
                         maxDepthThreshold={1}
-                        color="#101010"
+                        color="#333333"
                         roughness={0.7}
                         metalness={0.5}
                     />

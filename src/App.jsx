@@ -64,6 +64,7 @@ function App() {
       <Leva hidden />
       <Overlay />
       <Canvas
+        shadows
         gl={{ logarithmicDepthBuffer: true, antialias: false }}
         dpr={[1, 1.5]}
       >
