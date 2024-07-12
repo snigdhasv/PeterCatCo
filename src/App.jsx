@@ -1,27 +1,44 @@
+
 import React, { useState, useRef } from 'react';
-import { useAtom } from "jotai";
-import { Leva } from "leva";
-import { Overlay } from "./components/Overlay";
+import { Scene } from './components/Scene';
+import { Canvas } from '@react-three/fiber';
+import { Leva } from 'leva';
+import { useAtom } from 'jotai';
+import useLights from './components/LightsManager';
+import Lights from './components/Lights';
+import LightControls from './components/LightControls';
+import { Experience, slideAtom, scenes } from './components/Experience';
+import { Overlay } from './components/Overlay';
 import InfoPanel from './components/InfoPanel';
-import CanvasComponent from './components/CanvasComponent';
 import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
-import { scenes, slideAtom } from './components/Experience';
-import { Scene } from './components/Scene';
-import { MenuPanel, TexturesMaterialsAtom } from './components/MenuPanel';
+import { MenuPanel, TexturesMaterialsAtom} from './components/MenuPanel';
+
 
 function App() {
+  const {
+    lights,
+    globalExposure,
+    addLight,
+    updateLight,
+    deleteLight,
+    resetLights,
+    toggleGlobalShadows,
+    globalShadows,
+    updateGlobalExposure,
+    expandedLightId,
+    setExpandedLightId,
+  } = useLights();
+
   const [slide] = useAtom(slideAtom);
   const [selectedObject, setSelectedObject] = useState(null);
   const [showInfoPanel, setShowInfoPanel] = useState(true);
   const sceneRef = useRef();
   const canvasRef = useRef();
   const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
-  
-  // Object controls hook
+
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
-  
-  // Scene controls hook
+
   const {
     handleColorChange,
     handleMaterialChange,
@@ -47,8 +64,11 @@ function App() {
     <>
       <Leva hidden />
       <Overlay />
-      
-      <CanvasComponent ref={canvasRef} sceneRef={sceneRef} onObjectClick={handleObjectClick} onObjectHover={handleObjectHover} highlightedMesh={highlightedMesh}>
+      <Canvas
+        gl={{ logarithmicDepthBuffer: true, antialias: false }}
+        dpr={[1, 1.5]}
+      >
+        <Experience />
         <Scene
           ref={sceneRef}
           onObjectClick={handleObjectClick}
@@ -56,7 +76,8 @@ function App() {
           highlightedMesh={highlightedMesh}
           {...scenes[slide]}
         />
-      </CanvasComponent>
+        <Lights lights={lights} globalExposure={globalExposure} />
+      </Canvas>
       <MenuPanel/>
       {selectedObject && TexturesMaterials && (
         <InfoPanel
@@ -78,6 +99,19 @@ function App() {
         />
       )}
       {!TexturesMaterials}
+        <LightControls
+        lights={lights}
+        updateLight={updateLight}
+        setExpandedLightId={setExpandedLightId} // Correctly pass this prop
+        expandedLightId={expandedLightId} // Ensure this prop is also passed
+        addLight={addLight}
+        deleteLight={deleteLight}
+        resetLights={resetLights}
+        toggleGlobalShadows={toggleGlobalShadows}
+        globalShadows={globalShadows}
+        globalExposure={globalExposure}
+        updateGlobalExposure={updateGlobalExposure}
+      />
     </>
   );
 }
