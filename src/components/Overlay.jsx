@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { scenesAtom, slideAtom } from './Experience';
 import { storage } from './Firebase';
 import CloudLoader from './CloudLoaderComponent';
 import '../index.css';
 import './info_panel.css'
-import { ref as storageRef, uploadBytes } from 'firebase/storage';
-import Lights from './Lights';
-import LightControls from './LightControls';
-import useLights from './LightsManager';
+import { ref, uploadBytesResumable} from 'firebase/storage';
 
-export const Overlay = () => {
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
+
+export const Overlay = ({sceneRef}) => {
   const [slide, setSlide] = useAtom(slideAtom);
   const [displaySlide, setDisplaySlide] = useState(slide);
   const [visible, setVisible] = useState(false);
@@ -64,36 +63,120 @@ export const Overlay = () => {
     }
   };
 
-  const handleExportDevice = () => {
-    const modelData = null; 
-
-    const blob = new Blob([modelData], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'model.glb';
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleExportDevice = async () => {
+    const modelData = await getModelData();
+  
+    if (!modelData) {
+      console.error('No model data to export.');
+      return;
+    }
+  
+    const exporter = new GLTFExporter();
+  
+    const options = {
+      binary: true,
+      trs: false,
+      onlyVisible: true,
+      truncateDrawRange: true,
+      embedImages: true,
+      maxTextureSize: 1024 || Infinity,
+    };
+  
+    exporter.parse(sceneRef.current, (result) => {
+      try {
+        if (result instanceof ArrayBuffer) {
+          const blob = new Blob([result], { type: 'application/octet-stream' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'model.glb'; 
+          document.body.appendChild(a); 
+          a.click();
+          document.body.removeChild(a); 
+          URL.revokeObjectURL(url); 
+        } else {
+          const output = JSON.stringify(result, null, 2);
+          const blob = new Blob([output], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'model.gltf';
+          document.body.appendChild(a); 
+          a.click();
+          document.body.removeChild(a); 
+          URL.revokeObjectURL(url); 
+        }
+      } catch (error) {
+        console.error('Error exporting file:', error);
+      }
+    }, options);
   };
+  
 
   const handleExport = async () => {
-    const modelData = await getModelData();
-    if (modelData) {
-      const modelName = prompt('Enter a name for the model:');
-      if (modelName) {
-        try {
-          const modelRef = storageRef(storage, `${modelName}.glb`);
-          const blob = new Blob([modelData], { type: 'application/octet-stream' });
-          await uploadBytes(modelRef, blob);
-          alert('Model uploaded successfully!');
-        } catch (error) {
-          console.error('Error uploading model:', error);
-        }
-      }
-    } else {
-      alert('No model data available to export!');
+    const modelName = prompt('Enter a name for the model:');
+    if (!sceneRef.current || !sceneRef.current.children.length) {
+      console.error('Invalid or empty scene');
+      return;
     }
+    const exporter = new GLTFExporter();
+  
+    const options = {
+      binary: true,
+      trs: false,
+      onlyVisible: true,
+      truncateDrawRange: true,
+      embedImages: true,
+      maxTextureSize: 1024 || Infinity,
+    };
+  
+    exporter.parse(sceneRef.current, async (result) => {
+      try {
+        if (result instanceof ArrayBuffer) {
+          const file = new Blob([result], { type: 'application/octet-stream' });
+          const storageRef = ref(storage, `${modelName}.glb`);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+
+          uploadTask.on('state_changed',
+            (snapshot) => {
+              // Progress monitoring if needed
+            },
+            (error) => {
+              console.error('Error uploading file:', error);
+            },
+            () => {
+              console.log('Upload successful!');
+            }
+          );
+          
+  
+        } else {
+          const output = JSON.stringify(result, null, 2);
+          const file = new Blob([output], { type: 'text/plain' });
+          const storageRef = ref(storage, `${modelName}.gltf`);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+
+          uploadTask.on('state_changed',
+            (snapshot) => {
+              // Progress monitoring if needed
+            },
+            (error) => {
+              console.error('Error uploading file:', error);
+            },
+            () => {
+              console.log('Upload successful!');
+            }
+          );
+  
+          // Add progress monitoring and error handling for uploadTask
+        }
+      } catch (error) {
+        console.error('Error exporting or uploading file:', error);
+        // Add more specific error handling if needed
+      }
+    }, options);
   };
+  
 
 
 

@@ -33,6 +33,12 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
         });
     }, [scene]);
 
+    useEffect(() => {
+        if (ref) {
+          ref.current = scene; // Assign scene to ref.current
+        }
+      }, [ref, scene]);
+
     const handlePointerUp = (e) => {
         e.stopPropagation();
         if (onObjectClick) {

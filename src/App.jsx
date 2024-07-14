@@ -69,7 +69,7 @@ function App() {
   return (
     <>
       <Leva hidden />
-      <Overlay />
+      <Overlay sceneRef={sceneRef} />
       <Canvas
         shadows
         gl={{ logarithmicDepthBuffer: true, antialias: false }}
