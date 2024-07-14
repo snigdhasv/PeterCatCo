@@ -59,6 +59,13 @@ function App() {
     setSelectedObject(null);
   };
 
+  // Conditional hover handler
+  const conditionalObjectHover = (mesh) => {
+    if (TexturesMaterials) {
+      handleObjectHover(mesh);
+    }
+  };
+
   return (
     <>
       <Leva hidden />
@@ -71,14 +78,14 @@ function App() {
         <Experience />
         <Scene
           ref={sceneRef}
-          onObjectClick={handleObjectClick} // Ensure this is passed correctly
-          onObjectHover={handleObjectHover} // Ensure this is passed correctly
+          onObjectClick={handleObjectClick}
+          onObjectHover={conditionalObjectHover}
           highlightedMesh={highlightedMesh}
           {...scenes[slide]}
         />
         <Lights lights={lights} globalExposure={globalExposure} />
       </Canvas>
-      <MenuPanel/>
+      <MenuPanel />
       {selectedObject && TexturesMaterials && (
         <InfoPanel
           object={selectedObject}
@@ -103,8 +110,8 @@ function App() {
         <LightControls
           lights={lights}
           updateLight={updateLight}
-          setExpandedLightId={setExpandedLightId} // Correctly pass this prop
-          expandedLightId={expandedLightId} // Ensure this prop is also passed
+          setExpandedLightId={setExpandedLightId}
+          expandedLightId={expandedLightId}
           addLight={addLight}
           deleteLight={deleteLight}
           resetLights={resetLights}
