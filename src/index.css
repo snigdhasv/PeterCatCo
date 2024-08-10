@@ -40,6 +40,7 @@ body{
 .logo {
   font-family: "Racing Sans One", sans-serif;
   color: #de1d1d;
+  font-size: 2rem;
 }
 
 .nav-bar {
@@ -52,6 +53,18 @@ body{
   color: white;
   pointer-events: auto;
   background-color: transparent;
+}
+
+.hamburger-menu {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
 }
 
 .nav-left, .nav-right {
@@ -206,7 +219,7 @@ label.nav-link{
   outline: none;
   color: white;
   text-decoration: none;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   border-radius: 8px;
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: pointer;
@@ -222,10 +235,48 @@ label.nav-link{
 }
 
 @media (max-width: 600px) {
-  .vr-ar-buttons {
-    bottom: 1rem;
+  .logo{
+    margin-right: 4rem;
+  }
+  .hamburger-menu {
+    margin: 1rem;
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .nav-left, .nav-right{
+    padding: 0;
+  }
+
+  .nav-left, .nav-right{
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .nav-left .nav-link, .nav-right .nav-link {
+    padding: 0.8rem;
+  }
+
+  .vr-ar-buttons {
+    position: static;
+    gap: 0.5rem;
+    margin: 2rem;
+    margin-left: 15rem;
   }
 
   .vr-ar-buttons .buttons {

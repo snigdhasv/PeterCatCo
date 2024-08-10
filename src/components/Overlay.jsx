@@ -16,6 +16,8 @@ export const Overlay = ({sceneRef, store}) => {
   const [visible, setVisible] = useState(false);
   const [scenes, setScenes] = useAtom(scenesAtom);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
 
   useEffect(() => {
     setVisible(false);
@@ -206,6 +208,11 @@ export const Overlay = ({sceneRef, store}) => {
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
       <>
         <div className="nav-bar">
+          <div className="hamburger-menu" onClick={() => setShowMenu(!showMenu)}>
+            &#9776;
+          </div>
+          <h1 className='logo'>PeterCatCo</h1>
+          <div className={`navbar-links ${showMenu ? 'active' : ''}`}>
           <div className="nav-left">
             <input
               type="file"
@@ -221,7 +228,7 @@ export const Overlay = ({sceneRef, store}) => {
               Export To Device
             </button>
           </div>
-          <h1 className='logo'>PeterCatCo</h1>
+          
           <div className="nav-right">
             <div className="dropdown">
               <button className="dropbtn" onClick={() => setShowDropdown(!showDropdown)}>
@@ -242,7 +249,7 @@ export const Overlay = ({sceneRef, store}) => {
             <button className='buttons' onClick={handleARClick}>Enter AR</button>
             <button className='buttons' onClick={handleVRClick}>Enter VR</button>
           </div>
-          
+          </div>
         </div>
         <div className="content">
           <h1 className="title">{scenes[slide].name}</h1>
