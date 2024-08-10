@@ -3,7 +3,7 @@ import { Scene } from './components/Scene';
 import { Canvas } from '@react-three/fiber';
 import { Leva } from 'leva';
 import { useAtom } from 'jotai';
-
+import { useEffect } from 'react';
 import { XR, createXRStore, VRButton } from '@react-three/xr';
 
 import useLights from './components/LightsManager';
@@ -70,6 +70,19 @@ function App() {
       handleObjectHover(mesh);
     }
   };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas && canvas.gl) {
+      const vrButton = VRButton.createButton(canvas.gl);
+      document.body.appendChild(vrButton);
+  
+      return () => {
+        document.body.removeChild(vrButton);
+      };
+    }
+  }, [canvasRef]);
+  
 
   return (
     <>

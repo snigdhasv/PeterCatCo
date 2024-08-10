@@ -8,7 +8,7 @@ import './info_panel.css'
 import { ref, uploadBytesResumable} from 'firebase/storage';
 
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
-import { VRButton } from '@react-three/xr';
+
 
 export const Overlay = ({sceneRef, store}) => {
   const [slide, setSlide] = useAtom(slideAtom);
@@ -185,6 +185,23 @@ export const Overlay = ({sceneRef, store}) => {
     setSlide(pageNumber);
   };
 
+  const handleARClick = () => {
+    if (store.enterAR) {
+      store.enterAR();
+    } else {
+      console.error('store.enterAR is not defined');
+    }
+  };
+  
+  const handleVRClick = () => {
+    if (store.enterVR) {
+      store.enterVR();
+    } else {
+      console.error('store.enterVR is not defined');
+    }
+  };
+  
+
   return (
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
       <>
@@ -222,8 +239,8 @@ export const Overlay = ({sceneRef, store}) => {
           </div>
 
           <div className="vr-ar-buttons">
-            <button className='buttons' onClick={() => store.enterVR()}>Enter VR</button>
-            <button className='buttons' onClick={() => store.enterAR()}>Enter AR</button>
+            <button className='buttons' onClick={handleARClick}>Enter AR</button>
+            <button className='buttons' onClick={handleVRClick}>Enter VR</button>
           </div>
           
         </div>
