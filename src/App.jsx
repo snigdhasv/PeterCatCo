@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Scene } from './components/Scene';
+import React, { useState, useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Canvas } from '@react-three/fiber';
 import { Leva } from 'leva';
 import { useAtom } from 'jotai';
@@ -12,6 +12,8 @@ import InfoPanel from './components/InfoPanel';
 import useObjectControls from './components/ObjectControls';
 import useSceneControls from './components/SceneControls';
 import { MenuPanel, TexturesMaterialsAtom, LightsAtom } from './components/MenuPanel';
+import { XR, createXRStore, VRButton } from '@react-three/xr';
+import { Scene } from './components/Scene';
 
 function App() {
   const {
@@ -35,6 +37,7 @@ function App() {
   const canvasRef = useRef();
   const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
   const [Light, setLights] = useAtom(LightsAtom);
+  const store = createXRStore();
 
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
 
@@ -66,24 +69,44 @@ function App() {
     }
   };
 
+  // Use effect to add VRButton
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas && canvas.gl) {
+      // Correct VRButton usage
+      const vrButton = VRButton.createButton(canvas.gl);
+      document.body.appendChild(vrButton);
+
+      return () => {
+        document.body.removeChild(vrButton);
+      };
+    }
+  }, []);
+
   return (
     <>
       <Leva hidden />
-      <Overlay sceneRef={sceneRef} />
+
+      <Overlay sceneRef={sceneRef} store={store} />
+      
       <Canvas
+        ref={canvasRef} // Reference for VRButton
         shadows
         gl={{ logarithmicDepthBuffer: true, antialias: false }}
         dpr={[1, 1.5]}
+        style={{ backgroundColor: '#15151a' }}
       >
-        <Experience />
-        <Scene
-          ref={sceneRef}
-          onObjectClick={handleObjectClick}
-          onObjectHover={conditionalObjectHover}
-          highlightedMesh={highlightedMesh}
-          {...scenes[slide]}
-        />
-        <Lights lights={lights} globalExposure={globalExposure} />
+        <XR store={store}>
+          <Experience />
+          <Scene
+            ref={sceneRef}
+            onObjectClick={handleObjectClick}
+            onObjectHover={conditionalObjectHover}
+            highlightedMesh={highlightedMesh}
+            {...scenes[slide]}
+          />
+          <Lights lights={lights} globalExposure={globalExposure} />
+        </XR> 
       </Canvas>
       <MenuPanel />
       {selectedObject && TexturesMaterials && (

@@ -1,15 +1,14 @@
-/* index.css */
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
 
-#root{
-  width:100vw;
+#root {
+  width: 100vw;
   height: 100vh;
 }
 
-body{
+body {
   margin: 0;
-  font-family: 'Raleway',sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 
 .overlay {
@@ -28,40 +27,66 @@ body{
   background-color: transparent;
 }
 
-.overlay .visible {
+.overlay.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.invisible {
+.overlay.invisible {
   opacity: 0;
 }
 
 .logo {
   font-family: "Racing Sans One", sans-serif;
   color: #de1d1d;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.nav-bar {
+.container {
   position: fixed;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Center all content in the container */
   align-items: center;
   top: 0;
   color: white;
-  pointer-events: auto;
   background-color: transparent;
+  padding: 1rem;
+  z-index: 10;
+}
+
+.navbar {
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 1rem;
+}
+
+.nav-right {
+  position: fixed;
+  right: 1rem;
+}
+
+.nav-left {
+  position: fixed;
+  left: 1rem;
 }
 
 .nav-left, .nav-right {
   display: flex;
-  padding: 1.5rem;
   gap: 3rem;
+  top: 1rem;
 }
 
-.nav-bar .nav-left .nav-link,
-.nav-bar .nav-right .nav-link {
+.container .nav-left .nav-link,
+.container .nav-right .nav-link {
   font-family: "Exo 2", sans-serif;
   background-color: transparent;
   color: white;
@@ -70,16 +95,16 @@ body{
   transition: color 0.3s ease;
 }
 
-.nav-bar .nav-left .nav-link:hover,
-.nav-bar .nav-right .nav-link:hover {
+.container .nav-left .nav-link:hover,
+.container .nav-right .nav-link:hover {
   color: rgb(255, 0, 0);
 }
 
-label.nav-link{
+label.nav-link {
   cursor: pointer;
 }
 
-.exportbtn{
+.exportbtn {
   font-family: "Exo 2", sans-serif;
   font-size: 1rem;
   background-color: transparent;
@@ -92,11 +117,11 @@ label.nav-link{
   cursor: pointer;
 }
 
-.exportbtn:hover{
+.exportbtn:hover {
   color: rgb(255, 0, 0);
 }
 
-.dropdown .dropbtn{
+.dropdown .dropbtn {
   font-family: "Exo 2", sans-serif;
   font-size: 1rem;
   background-color: transparent;
@@ -109,7 +134,7 @@ label.nav-link{
   cursor: pointer;
 }
 
-.dropdown .dropbtn:hover{
+.dropdown .dropbtn:hover {
   color: rgb(255, 0, 0);
 }
 
@@ -120,6 +145,7 @@ label.nav-link{
   background-color: #f5f0f0;
   min-width: 13rem;
   z-index: 1;
+  right: 0;
 }
 
 .dropdown-content button {
@@ -135,11 +161,139 @@ label.nav-link{
 
 .dropdown-content button:hover {
   background-color: #dba7a7;
-  cursor: pointer;  
+  cursor: pointer;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+/* Hamburger Menu Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  right: 0;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bar {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+/* Rotate bars to form "X" when menu is open */
+.navbar.open .hamburger .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar.open .hamburger .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar.open .hamburger .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .container {
+    width: 80%; 
+  }
+
+  .nav-left, .nav-right {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    top: 1rem;
+  }
+
+  .logo {
+    left: 49%;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column; 
+    width: 95%; 
+    top: 1%;
+  }
+
+  .navbar {
+    width: 100%; 
+    margin: 0; 
+    margin-bottom: 2rem; 
+    justify-content: space-between;
+    background-color: transparent;
+  }
+
+  .nav-links {
+    display: none; 
+    flex-direction: column; 
+    width: 100%; 
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    background-color: rgba(21, 21, 24, 0.804);
+    border-radius: 4rem;
+    gap: 1rem;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+    transform: translateY(-100%); 
+  }
+
+  .navbar.open .nav-links {
+    display: flex; 
+    transform: translateY(0); 
+  }
+
+  .hamburger {
+    display: flex; 
+  }
+
+  .nav-left, .nav-right {
+    display: flex; 
+    flex-direction: column; /* Stack components vertically */
+    gap: 1rem; /* Adjust spacing between items */
+    top: 1rem;
+    position: relative; /* Ensure it’s positioned within the menu */
+    width: 100%; /* Full width for the vertical layout */
+    padding: 1rem; /* Optional padding for better spacing */
+    align-items: center; /* Center-align the items */
+  }
+
+  .exportbtn {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    height: auto; 
+    margin-left: 1rem; 
+    margin-right: 1rem; 
+    flex-direction: column; 
+    gap: 0.5rem; 
+  }
 }
 
 .content {
@@ -154,7 +308,7 @@ label.nav-link{
 
 .title {
   padding-top: 30rem;
-  font-family:"Racing Sans One", sans-serif;
+  font-family: "Racing Sans One", sans-serif;
   font-size: 2.7rem;
   font-weight: 800;
   margin: 2rem;
@@ -184,4 +338,50 @@ label.nav-link{
   font-weight: bold;
   background-color: #de1d1d;
   color: #f5f0f0;
+}
+
+/* VR/AR Buttons Styles */
+.vr-ar-buttons {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.vr-ar-buttons .buttons {
+  font-family: "Exo 2", sans-serif;
+  font-size: 1rem;
+  background-color: rgba(255, 0, 0, 0.8);
+  border: none;
+  outline: none;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.vr-ar-buttons .buttons:hover {
+  background-color: rgba(255, 0, 0, 1);
+  transform: scale(1.05);
+}
+
+.vr-ar-buttons .buttons:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .vr-ar-buttons {
+    bottom: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .vr-ar-buttons .buttons {
+    padding: 0.8rem 1.6rem;
+  }
 }

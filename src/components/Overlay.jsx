@@ -6,10 +6,11 @@ import CloudLoader from './CloudLoaderComponent';
 import '../index.css';
 import './info_panel.css'
 import { ref, uploadBytesResumable} from 'firebase/storage';
+import { VRButton } from '@react-three/xr';
 
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 
-export const Overlay = ({sceneRef}) => {
+export const Overlay = ({sceneRef, store}) => {
   const [slide, setSlide] = useAtom(slideAtom);
   const [displaySlide, setDisplaySlide] = useState(slide);
   const [visible, setVisible] = useState(false);
@@ -23,6 +24,18 @@ export const Overlay = ({sceneRef}) => {
       setVisible(true);
     }, 200);
   }, [slide]);
+
+  useEffect(() => {
+    const canvas = sceneRef.current;
+    if (canvas && canvas.gl) {
+      const vrButton = VRButton.createButton(canvas.gl);
+      document.body.appendChild(vrButton);
+
+      return () => {
+        document.body.removeChild(vrButton);
+      };
+    }
+  }, [sceneRef]);
 
   const getModelData = async () => {
     const currentScene = scenes[displaySlide];
@@ -184,10 +197,22 @@ export const Overlay = ({sceneRef}) => {
     setSlide(pageNumber);
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+
   return (
     <div className={`overlay ${visible ? 'visible' : 'invisible'}`}>
-      <>
-        <div className="nav-bar">
+      <> 
+      <h1 className='logo'>PeterCatCo</h1>
+        <div className="container">
+        <nav className={`navbar ${isOpen ? 'open' : ''}`}>
+          <div className="hamburger" onClick={toggleMenu}>
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
+          </div>
+
+          <div className={`nav-links ${isOpen ? 'show' : ''}`}>
           <div className="nav-left">
             <input
               type="file"
@@ -196,17 +221,17 @@ export const Overlay = ({sceneRef}) => {
               style={{ display: 'none' }}
               id="import-file"
             />
-            <label htmlFor="import-file" className="nav-link">
+            <label htmlFor="import-file" className="nav-link" id='nav-header'>
               Import From Device
             </label>
-            <button onClick={handleExportDevice} className="exportbtn">
+            <button onClick={handleExportDevice} className="exportbtn" id='nav-header'>
               Export To Device
             </button>
           </div>
-          <h1 className='logo'>PeterCatCo</h1>
+          
           <div className="nav-right">
             <div className="dropdown">
-              <button className="dropbtn" onClick={() => setShowDropdown(!showDropdown)}>
+              <button className="dropbtn" onClick={() => setShowDropdown(!showDropdown)} id='nav-header'>
                 Import From Firebase
               </button>
               {showDropdown && (
@@ -215,9 +240,15 @@ export const Overlay = ({sceneRef}) => {
                 </div>
               )}
             </div>
-            <button onClick={handleExport} className="exportbtn">
+            <button onClick={handleExport} className="exportbtn" id='nav-header'>
               Export To Firebase
             </button>
+          </div>
+          </div>
+          </nav>
+          <div className="vr-ar-buttons">
+            <button className='buttons' onClick={() => store.enterVR()}>Enter VR</button>
+            <button className='buttons' onClick={() => store.enterAR()}>Enter AR</button>
           </div>
         </div>
         <div className="content">
