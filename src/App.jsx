@@ -80,6 +80,7 @@ function App() {
         shadows
         gl={{ logarithmicDepthBuffer: true, antialias: false }}
         dpr={[1, 1.5]}
+        style={{ backgroundColor: '#15151a' }}
       >
         <XR store={store}>
         <Experience />

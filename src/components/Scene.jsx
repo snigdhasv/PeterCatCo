@@ -64,7 +64,7 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
     return (
         <>
             <group {...props} dispose={null}>
-                <PerspectiveCamera makeDefault position={[0, 0, 12]} near={0.5} />
+                {/* <PerspectiveCamera makeDefault position={[0, 0, 12]} near={0.5} /> */}
                 <primitive object={scene} scale={1.5 * ratioScale} rotation={[0, Math.PI / 1.5, 0]}
                     onPointerUp={handlePointerUp} 
                     onPointerOver={handlePointerOver}
@@ -108,7 +108,7 @@ export const Scene = forwardRef(({ onObjectClick, onObjectHover, path, ...props 
                         metalness={0.5}
                     />
                 </mesh>
-                <Effects />
+                {/* <Effects /> */}
                 <OrbitControls enablePan={false} enableZoom={true} maxPolarAngle={Math.PI / 2.2} minDistance={5} maxDistance={50} />
             </group>
         </>
