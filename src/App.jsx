@@ -3,6 +3,9 @@ import { Scene } from './components/Scene';
 import { Canvas } from '@react-three/fiber';
 import { Leva } from 'leva';
 import { useAtom } from 'jotai';
+
+import { XR, createXRStore, VRButton } from '@react-three/xr';
+
 import useLights from './components/LightsManager';
 import Lights from './components/Lights';
 import LightControls from './components/LightControls';
@@ -35,6 +38,8 @@ function App() {
   const canvasRef = useRef();
   const [TexturesMaterials, setTexturesMaterials] = useAtom(TexturesMaterialsAtom);
   const [Light, setLights] = useAtom(LightsAtom);
+
+  const store = createXRStore();
 
   const { handleObjectClick, handleObjectHover, highlightedMesh } = useObjectControls(setSelectedObject, setShowInfoPanel);
 
@@ -69,12 +74,14 @@ function App() {
   return (
     <>
       <Leva hidden />
-      <Overlay sceneRef={sceneRef} />
+      <Overlay sceneRef={sceneRef} store={store} />
       <Canvas
+        ref={canvasRef}
         shadows
         gl={{ logarithmicDepthBuffer: true, antialias: false }}
         dpr={[1, 1.5]}
       >
+        <XR store={store}>
         <Experience />
         <Scene
           ref={sceneRef}
@@ -84,6 +91,7 @@ function App() {
           {...scenes[slide]}
         />
         <Lights lights={lights} globalExposure={globalExposure} />
+        </XR>
       </Canvas>
       <MenuPanel />
       {selectedObject && TexturesMaterials && (

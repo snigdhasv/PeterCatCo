@@ -185,3 +185,50 @@ label.nav-link{
   background-color: #de1d1d;
   color: #f5f0f0;
 }
+
+
+/* VR/AR Buttons Styles */
+.vr-ar-buttons {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.vr-ar-buttons .buttons {
+  font-family: "Exo 2", sans-serif;
+  font-size: 1rem;
+  background-color: rgba(255, 0, 0, 0.8);
+  border: none;
+  outline: none;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.vr-ar-buttons .buttons:hover {
+  background-color: rgba(255, 0, 0, 1);
+  transform: scale(1.05);
+}
+
+.vr-ar-buttons .buttons:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .vr-ar-buttons {
+    bottom: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .vr-ar-buttons .buttons {
+    padding: 0.8rem 1.6rem;
+  }
+}

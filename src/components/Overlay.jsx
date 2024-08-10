@@ -8,8 +8,9 @@ import './info_panel.css'
 import { ref, uploadBytesResumable} from 'firebase/storage';
 
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
+import { VRButton } from '@react-three/xr';
 
-export const Overlay = ({sceneRef}) => {
+export const Overlay = ({sceneRef, store}) => {
   const [slide, setSlide] = useAtom(slideAtom);
   const [displaySlide, setDisplaySlide] = useState(slide);
   const [visible, setVisible] = useState(false);
@@ -219,6 +220,12 @@ export const Overlay = ({sceneRef}) => {
               Export To Firebase
             </button>
           </div>
+
+          <div className="vr-ar-buttons">
+            <button className='buttons' onClick={() => store.enterVR()}>Enter VR</button>
+            <button className='buttons' onClick={() => store.enterAR()}>Enter AR</button>
+          </div>
+          
         </div>
         <div className="content">
           <h1 className="title">{scenes[slide].name}</h1>
