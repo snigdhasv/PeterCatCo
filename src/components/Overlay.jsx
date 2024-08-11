@@ -251,29 +251,7 @@ export const Overlay = ({sceneRef, store}) => {
           </div>
           </div>
         </div>
-        <div className="content">
-          <h1 className="title">{scenes[slide].name}</h1>
-          <div className="pages">
-            <button className='pages-button' 
-              onClick={() => setSlide((prev) => (prev > 0 ? prev - 1 : scenes.length - 1))}>
-              &laquo;    
-            </button>
-            {scenes.map((scene, index) => (
-              <button
-                key={index}
-                className={`pages-button ${slide === index ? 'active' : ''}`}
-                onClick={() => handlePageChange(index)}
-              >
-                {index + 1}
-              </button>
-            ))} 
-            <button className='pages-button' 
-              onClick={() => setSlide((prev) => (prev < scenes.length - 1 ? prev + 1 : 0))}>
-              &raquo;    
-            </button>
-          </div>
-          
-        </div>
+        
         
       </>
     </div>
